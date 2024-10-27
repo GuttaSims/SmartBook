@@ -12,11 +12,11 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0; /* Light background for contrast */
+            background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             text-align: center;
-            overflow: hidden; /* Prevents overflow during animation */
-            cursor: pointer; /* Changes cursor to pointer */
+            overflow: hidden;
+            cursor: pointer;
         }
 
         h1 {
@@ -40,13 +40,13 @@
         }
 
         .form-container {
-            display: none; /* Initially hide the form */
+            display: none;
             background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             margin-top: 20px;
-            width: 300px; /* Fixed width for consistency */
+            width: 300px;
         }
 
         .input-field {
@@ -54,13 +54,13 @@
             padding: 10px;
             border: 2px solid #ccc;
             border-radius: 5px;
-            width: 100%; /* Full width of the form */
+            width: 100%;
             font-size: 16px;
             transition: border-color 0.3s;
         }
 
         .input-field:focus {
-            border-color: #6a82fb; /* Change to gradient color on focus */
+            border-color: #6a82fb;
         }
 
         .submit-btn {
@@ -73,13 +73,28 @@
             margin: 10px 0;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
-            width: 100%; /* Full width of the form */
+            width: 100%;
         }
 
         .submit-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
+            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6),
                         0 0 30px rgba(252, 92, 125, 0.9);
+        }
+
+        .login-link {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #6a82fb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -88,6 +103,9 @@
     <div id="fadeIn">Touch To Start</div>
 
     <div class="form-container" id="formContainer">
+        <div class="login-link">
+            Already Have An Account? <a href="login.html">Login here.</a>
+        </div>
         <input type="text" id="firstName" class="input-field" placeholder="First Name" required>
         <input type="text" id="lastName" class="input-field" placeholder="Last Name" required>
         <input type="text" id="username" class="input-field" placeholder="Username" required>
@@ -100,7 +118,6 @@
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 
-        // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
             authDomain: "smartbook-2215.firebaseapp.com",
@@ -110,36 +127,29 @@
             appId: "1:999113949935:web:97d7d78e7ccf3f1b68911a"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Show "Touch To Start" after Welcome
         window.onload = () => {
             const fadeInText = document.getElementById('fadeIn');
             fadeInText.style.display = 'block';
             setTimeout(() => {
-                fadeInText.style.opacity = '1'; // Fade in "Touch To Start"
-            }, 2000); // Show after 2 seconds
+                fadeInText.style.opacity = '1';
+            }, 2000);
         };
 
-        // Handle click event on the body to show the form
         document.body.addEventListener('click', () => {
-            document.getElementById('formContainer').style.display = 'block'; // Show the form
-            document.getElementById('fadeIn').style.display = 'none'; // Hide the "Touch To Start" text
+            document.getElementById('formContainer').style.display = 'block';
+            document.getElementById('fadeIn').style.display = 'none';
         });
 
-        // Sign up user
         document.getElementById('signupBtn').addEventListener('click', async () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                // Signed in
-                const user = userCredential.user;
-                console.log('User signed up:', user);
-                // Redirect to index.html
+                console.log('User signed up:', userCredential.user);
                 window.location.href = 'index.html';
             } catch (error) {
                 console.error('Error signing up:', error.message);
