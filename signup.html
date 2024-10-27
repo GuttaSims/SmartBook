@@ -4,139 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
-            overflow: hidden;
+            overflow: hidden; /* Prevent scrolling during animation */
         }
 
-        .intro {
-            position: absolute;
-            text-align: center;
-            font-size: 32px;
-            color: transparent; /* Hide text initially */
-            background: linear-gradient(90deg, #fc5c7d, #6a82fb);
+        /* Add styles for the welcome text */
+        .welcome-text {
+            font-size: 24px;
+            color: transparent; /* Hide initially */
+            background: linear-gradient(45deg, #6a82fb, #fc5c7d);
             -webkit-background-clip: text;
             background-clip: text;
-            animation: fadeIn 3s ease-out;
+            animation: fadeIn 2s forwards; /* Fade in animation */
         }
 
         @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+            to {
+                color: white; /* Change to white when faded in */
+            }
         }
 
+        /* Touch to start styles */
         .touch-to-start {
-            opacity: 0; /* Hide initially */
-            transition: opacity 1s ease-in; /* Fade in effect */
-            font-size: 24px;
-            color: transparent; /* Hide text initially */
-            background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+            font-size: 18px;
+            color: transparent; /* Hide initially */
+            background: linear-gradient(45deg, #fc5c7d, #6a82fb);
             -webkit-background-clip: text;
             background-clip: text;
+            animation: fadeIn 2s forwards 2s; /* Fade in after welcome */
         }
 
-        .form-container {
-            display: none;
+        /* Styles for the form */
+        form {
+            display: flex;
             flex-direction: column;
-            gap: 15px;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            align-items: center;
+            margin-top: 20px;
+            opacity: 0; /* Start invisible */
+            transition: opacity 1s ease; /* Fade in effect */
         }
 
-        input {
+        form.visible {
+            opacity: 1; /* Show when the form is visible */
+        }
+
+        .input-field {
+            border-radius: 10px; /* Rounded corners */
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            width: 100%;
+            margin: 10px;
+            border: 1px solid #ccc;
+            width: 250px; /* Fixed width for inputs */
         }
 
         .signup-btn {
-            background: linear-gradient(145deg, #fc5c7d, #6a82fb);
-            border: none;
-            padding: 15px;
-            color: white;
-            font-size: 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
+            background: linear-gradient(45deg, #6a82fb, #fc5c7d);
+            border: none; /* No border */
+            border-radius: 10px; /* Rounded corners */
+            padding: 10px 20px;
+            color: white; /* White text */
+            cursor: pointer; /* Pointer on hover */
+            transition: background 0.5s; /* Smooth transition */
         }
 
         .signup-btn:hover {
-            transform: scale(1.05);
+            background: linear-gradient(45deg, #fc5c7d, #6a82fb); /* Change on hover */
         }
     </style>
 </head>
 <body>
-
-    <div class="intro">
-        <p>Welcome!</p>
-        <p class="touch-to-start">Touch To Start</p>
-    </div>
-
-    <div class="form-container" id="formContainer">
-        <input type="text" id="firstName" placeholder="First Name" required />
-        <input type="text" id="lastName" placeholder="Last Name" required />
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="text" id="username" placeholder="Username" required />
-        <input type="password" id="password" placeholder="Password" required />
-        <button class="signup-btn" onclick="handleSignUp()">Sign Up</button>
-    </div>
+    <div class="welcome-text">Welcome!</div>
+    <div class="touch-to-start">Touch To Start</div>
+    
+    <form id="signupForm">
+        <input type="text" id="firstName" class="input-field" placeholder="First Name" required>
+        <input type="text" id="lastName" class="input-field" placeholder="Last Name" required>
+        <input type="text" id="username" class="input-field" placeholder="Username" required>
+        <input type="email" id="email" class="input-field" placeholder="Email" required>
+        <input type="password" id="password" class="input-field" placeholder="Password" required>
+        <button type="button" class="signup-btn" onclick="handleSignUp()">Sign Up</button>
+    </form>
 
     <script type="module">
+        // Firebase SDK
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
 
+        // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
             authDomain: "smartbook-2215.firebaseapp.com",
             projectId: "smartbook-2215",
             storageBucket: "smartbook-2215.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            messagingSenderId: "999113949935",
+            appId: "1:999113949935:web:97d7d78e7ccf3f1b68911a"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        document.body.addEventListener("click", () => {
-            document.querySelector(".intro").style.display = "none";
-            document.getElementById("formContainer").style.display = "flex";
-        });
-
+        // Handle Sign Up
         function handleSignUp() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    window.location.href = "index.html";
+                    window.location.href = "index.html"; // Redirect to homepage
                 })
                 .catch((error) => {
-                    alert(error.message);
+                    alert(error.message); // Show error message
                 });
         }
 
-        // Show "Touch To Start" after 2 seconds
-        setTimeout(() => {
-            const touchText = document.querySelector(".touch-to-start");
-            touchText.style.opacity = 1; // Fade in the text
-        }, 2000);
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.location.href = "index.html";
-            }
+        // Fade in the form after "Touch To Start"
+        document.querySelector('.touch-to-start').addEventListener('animationend', function() {
+            document.querySelector('form').classList.add('visible');
         });
     </script>
-
 </body>
 </html>
