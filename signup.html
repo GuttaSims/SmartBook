@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Alternate Login</title>
     <link rel="stylesheet" href="style.css">
     <style>
         * {
@@ -18,6 +18,20 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             text-align: center;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        h1, #fadeIn {
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: opacity 1s ease;
+        }
+        #fadeIn {
+            display: none;
+            font-size: 24px;
+            margin-top: 20px;
+            opacity: 0;
         }
         .form-container {
             background-color: white;
@@ -28,10 +42,10 @@
         }
         .input-field {
             margin: 10px 0;
-            padding: 12px;
+            padding: 12px; /* Adjusted padding for better fit */
             border: 2px solid #ccc;
             border-radius: 5px;
-            width: calc(100% - 24px);
+            width: calc(100% - 24px); /* Adjust width to account for border and padding */
             font-size: 16px;
         }
         .submit-btn {
@@ -43,6 +57,12 @@
             font-size: 18px;
             cursor: pointer;
             width: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
+                        0 0 30px rgba(252, 92, 125, 0.9);
         }
         .login-link {
             margin-top: 10px;
@@ -51,17 +71,31 @@
             color: #6a82fb;
             text-decoration: none;
         }
+        .forgot-password {
+            margin-top: 10px;
+            font-size: 12px; /* Adjusted font size */
+        }
+        .remember-me {
+            margin: 10px 0;
+            font-size: 12px; /* Adjusted font size */
+        }
     </style>
 </head>
 <body>
     <div class="form-container">
-        <h1>Sign Up</h1>
-        <input type="text" id="email" class="input-field" placeholder="Email" required>
+        <input type="text" id="username" class="input-field" placeholder="Email" required>
         <input type="password" id="password" class="input-field" placeholder="Password" required>
-        <input type="password" id="confirmPassword" class="input-field" placeholder="Confirm Password" required>
-        <button id="signupBtn" class="submit-btn">Sign Up</button>
+        <div class="remember-me">
+            <input type="checkbox" id="rememberMe"> Remember Me
+        </div>
+        <button id="loginBtn" class="submit-btn">Sign In</button>
+
+        <div class="forgot-password"><a href="forgot-password.html">Forgot Password?</a></div>
         <div class="login-link">
-            Already have an account? <a href="login.html">Log in here</a>.
+            Don’t have an account? <a href="signup.html">Sign up here</a>.
+        </div>
+        <div class="login-link">
+            Other Sign-In Options: <a href="login.html">Username</a>
         </div>
     </div>
 
@@ -73,29 +107,29 @@
         // Initialize Backendless
         Backendless.initApp(APP_ID, JS_API_KEY);
 
-        document.getElementById('signupBtn').addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
+        // Check if the user is already logged in
+        Backendless.User.getCurrentUser()
+            .then(user => {
+                if (user) {
+                    window.location.href = 'index.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error checking current user:', error);
+            });
 
-            if (password !== confirmPassword) {
-                alert("Passwords do not match.");
-                return;
-            }
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
             try {
-                // Register the user
-                const user = {
-                    email: email,
-                    password: password
-                };
-                const registeredUser = await Backendless.User.register(user);
-                console.log('User registered:', registeredUser);
-                alert('Registration successful! You can now log in.');
-                window.location.href = 'login.html'; // Redirect to login after successful registration
+                // Log in the user
+                const user = await Backendless.User.login(username, password);
+                console.log('User logged in:', user);
+                window.location.href = 'index.html'; // Redirect on successful login
             } catch (error) {
-                console.error('Registration error:', error.message);
-                alert('Error: ' + error.message);
+                console.error('Login error:', error.message);
+                alert('Invalid username or password.');
             }
         });
     </script>
