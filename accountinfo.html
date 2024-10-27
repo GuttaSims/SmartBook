@@ -91,20 +91,33 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
+        .section {
+            margin: 20px 0; /* Space between sections */
+        }
     </style>
 </head>
 <body>
     <h1>Account Info</h1>
     <div class="form-container">
         <p id="userInfo"></p>
-        <input type="text" id="username" class="input-field" placeholder="Username" required>
-        <input type="email" id="email" class="input-field" placeholder="Email" required>
-        <input type="password" id="currentPassword" class="input-field" placeholder="Current Password" required>
-        <input type="password" id="newPassword" class="input-field" placeholder="New Password" required>
-        <input type="password" id="confirmNewPassword" class="input-field" placeholder="Confirm New Password" required>
-        
-        <button id="changePasswordBtn" class="submit-btn">Change Password</button>
-        
+
+        <!-- Update Info Section -->
+        <div class="section">
+            <h2>Update Info</h2>
+            <input type="text" id="username" class="input-field" placeholder="Username" required>
+            <input type="email" id="email" class="input-field" placeholder="Email" required>
+            <button id="updateInfoBtn" class="submit-btn">Update Info</button>
+        </div>
+
+        <!-- Change Password Section -->
+        <div class="section">
+            <h2>Change Password</h2>
+            <input type="password" id="currentPassword" class="input-field" placeholder="Current Password" required>
+            <input type="password" id="newPassword" class="input-field" placeholder="New Password" required>
+            <input type="password" id="confirmNewPassword" class="input-field" placeholder="Confirm New Password" required>
+            <button id="changePasswordBtn" class="submit-btn">Change Password</button>
+        </div>
+
         <!-- Delete Account Button -->
         <button id="deleteAccountBtn" class="submit-btn">Delete Account</button>
 
@@ -156,6 +169,28 @@
             }
         });
 
+        // Update user information
+        document.getElementById('updateInfoBtn').addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (user) {
+                const userId = user.uid;
+                const newUsername = document.getElementById('username').value;
+                const newEmail = document.getElementById('email').value;
+
+                // Update user info in the database
+                const userRef = ref(db, 'users/' + userId);
+                await update(userRef, {
+                    username: newUsername,
+                    email: newEmail
+                }).then(() => {
+                    alert("Information updated successfully!");
+                }).catch((error) => {
+                    console.error("Error updating info:", error.message);
+                    alert("Failed to update information: " + error.message);
+                });
+            }
+        });
+
         // Delete account confirmation logic
         const deleteAccountBtn = document.getElementById('deleteAccountBtn');
         const confirmationPopup = document.getElementById('confirmationPopup');
@@ -178,15 +213,33 @@
                     alert("Account deleted successfully.");
                     window.location.href = 'signup.html'; // Redirect to signup or login page
                 } catch (error) {
-                    console.error("Error deleting account:", error.message);
+                    console.error("Error deleting account:", error);
                     alert("Failed to delete account: " + error.message);
                 }
             }
         });
 
-        // Handle password change functionality (implement as needed)
+        // Change password functionality
         document.getElementById('changePasswordBtn').addEventListener('click', async () => {
-            // Implement password change logic here
+            const user = auth.currentUser;
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+            if (user && newPassword === confirmNewPassword) {
+                try {
+                    await auth.signInWithEmailAndPassword(user.email, currentPassword); // Re-authenticate the user
+                    await user.updatePassword(newPassword); // Update password
+                    alert("Password changed successfully!");
+                } catch (error) {
+                    console.error("Error changing password:", error);
+                    alert("Failed to change password: " + error.message);
+                }
+            } else if (newPassword !== confirmNewPassword) {
+                alert("New passwords do not match!");
+            } else {
+                alert("User not found!");
+            }
         });
     </script>
 </body>
