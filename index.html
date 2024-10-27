@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Learning Platform</title>
-        <script>
-        // Redirect to signup.html immediately
-        window.location.href = "signup.html";
-    </script>
+    <title>Home</title>
     <style>
         body {
             display: flex;
@@ -15,72 +11,69 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0; /* Light background for contrast */
+            margin: 0;
+            background-color: #f0f0f0;
             font-family: Arial, sans-serif;
         }
 
-        .container {
-            text-align: center;
-        }
-
-        h1 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
         .button {
-            display: inline-block;
-            border: none; /* No border for a cleaner look */
-            border-radius: 10px; /* Rounded corners */
-            padding: 20px 40px;
-            color: #fff; /* White text color */
-            text-align: center;
+            width: 150px;
+            height: 150px;
+            margin: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            color: white;
+            font-size: 18px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(106, 130, 251, 0.5), 0 0 25px rgba(252, 92, 125, 0.7);
+            transition: all 0.3s;
+            cursor: pointer;
             text-decoration: none;
-            font-size: 20px;
-            margin: 10px; /* Space between buttons */
-            box-shadow: 0 4px 15px rgba(106, 130, 251, 0.5), 
-                        0 0 25px rgba(252, 92, 125, 0.7); /* Glow effect */
-            transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
         }
 
         .button:hover {
-            transform: translateY(-3px); /* Lift effect on hover */
-            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
-                        0 0 30px rgba(252, 92, 125, 0.9); /* Enhanced glow on hover */
+            transform: scale(1.05);
         }
 
-        .button1 {
-            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
-        }
-
-        .button2 {
-            background: linear-gradient(145deg, #ff9a44, #ff6f61);
-        }
-
-        .button3 {
-            background: linear-gradient(145deg, #48c6ef, #6f86d6);
-        }
-
-        .button4 {
-            background: linear-gradient(145deg, #f7797d, #fbd786);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+        .logout-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #fc5c7d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome!</h1>
-        <div class="grid">
-            <a href="library.html" class="button button1">Learning Library</a>
-            <a href="progress.html" class="button button2">Learning Progress</a>
-            <a href="account.html" class="button button3">Account Info</a>
-            <a href="help.html" class="button button4">Help</a>
-        </div>
-    </div>
+
+    <a href="library.html" class="button">Library</a>
+    <a href="progress.html" class="button">Progress</a>
+    <a href="account.html" class="button">Account</a>
+    <button class="logout-btn" onclick="handleLogout()">Logout</button>
+
+    <script type="module">
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+
+        const auth = getAuth();
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "signup.html";
+            }
+        });
+
+        function handleLogout() {
+            signOut(auth).then(() => {
+                window.location.href = "signup.html";
+            }).catch((error) => {
+                alert(error.message);
+            });
+        }
+    </script>
+
 </body>
 </html>
