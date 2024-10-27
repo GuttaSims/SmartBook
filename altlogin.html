@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Login</title>
+    <title>Alternative Login</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
@@ -18,18 +18,16 @@
             overflow: hidden;
             cursor: pointer;
         }
-        h1, #fadeIn {
+
+        h1 {
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            transition: opacity 1s ease;
+            font-size: 48px;
+            margin: 0;
+            transition: opacity 0.5s ease;
         }
-        #fadeIn {
-            display: none;
-            font-size: 24px;
-            margin-top: 20px;
-            opacity: 0;
-        }
+
         .form-container {
             background-color: white;
             padding: 20px;
@@ -37,6 +35,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             width: 300px;
         }
+
         .input-field {
             margin: 10px 0;
             padding: 10px;
@@ -45,6 +44,7 @@
             width: 100%;
             font-size: 16px;
         }
+
         .submit-btn {
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
             border: none;
@@ -56,14 +56,17 @@
             width: 100%;
             transition: transform 0.3s, box-shadow 0.3s;
         }
+
         .submit-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
+            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6),
                         0 0 30px rgba(252, 92, 125, 0.9);
         }
+
         .login-link {
             margin-top: 10px;
         }
+
         .login-link a {
             color: #6a82fb;
             text-decoration: none;
@@ -71,13 +74,19 @@
     </style>
 </head>
 <body>
+    <h1>Welcome!</h1>
+
     <div class="form-container">
-        <input type="email" id="email" class="input-field" placeholder="Email" required>
+        <input type="text" id="email" class="input-field" placeholder="Email" required>
         <input type="password" id="password" class="input-field" placeholder="Password" required>
         <button id="loginBtn" class="submit-btn">Login</button>
 
         <div class="login-link">
             Don’t have an account? <a href="signup.html">Sign up here</a>.
+        </div>
+        <div class="login-link">
+            Other Sign-In Options: 
+            <a href="login.html">Username</a>
         </div>
     </div>
 
@@ -95,9 +104,10 @@
         };
 
         const app = initializeApp(firebaseConfig);
-
-
         const auth = getAuth(app);
+
+        // Check if the user is already logged in
+
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -110,7 +120,8 @@
             const password = document.getElementById('password').value;
 
             try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                // Log the user in
+                await signInWithEmailAndPassword(auth, email, password);
                 window.location.href = 'index.html';
             } catch (error) {
                 console.error('Login error:', error.message);
