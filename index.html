@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glowing Gradient Button Example</title>
+    <title>Glowing Gradient Buttons</title>
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -27,6 +28,7 @@
             text-align: center;
             text-decoration: none;
             font-size: 16px;
+            margin: 10px; /* Space between buttons */
             box-shadow: 0 4px 15px rgba(106, 130, 251, 0.5), 
                         0 0 25px rgba(252, 92, 125, 0.7); /* Glow effect */
             transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
@@ -41,7 +43,10 @@
 </head>
 <body>
     <div class="container">
-        <a href="#" class="button">Click Me!</a>
+        <a href="#" class="button">Button 1</a>
+        <a href="#" class="button">Button 2</a>
+        <a href="#" class="button">Button 3</a>
+        <a href="#" class="button">Button 4</a>
     </div>
 </body>
 </html>
