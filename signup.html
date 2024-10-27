@@ -15,6 +15,27 @@
             background-color: #f0f0f0; /* Light background for contrast */
             font-family: Arial, sans-serif;
             text-align: center;
+            overflow: hidden; /* Prevents overflow during animation */
+        }
+
+        h1 {
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 48px;
+            margin: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #fadeIn {
+            display: none;
+            font-size: 24px;
+            margin-top: 20px;
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transition: opacity 1s ease;
         }
 
         .form-container {
@@ -23,6 +44,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
         }
 
         .input-field {
@@ -55,21 +77,6 @@
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
                         0 0 30px rgba(252, 92, 125, 0.9);
-        }
-
-        h1 {
-            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        #fadeIn {
-            display: none;
-            font-size: 24px;
-            margin-top: 20px;
-            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
@@ -109,7 +116,7 @@
             const fadeInText = document.getElementById('fadeIn');
             fadeInText.style.display = 'block';
             setTimeout(() => {
-                fadeInText.style.opacity = '1';
+                fadeInText.style.opacity = '1'; // Fade in "Touch To Start"
             }, 2000); // Show after 2 seconds
         };
 
