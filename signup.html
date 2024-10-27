@@ -115,21 +115,10 @@
         <button id="signupBtn" class="submit-btn">Sign Up</button>
     </div>
 
-    <script type="module">
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+    <script>
+        const Backendless = require('backendless');
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
-            authDomain: "smartbook-2215.firebaseapp.com",
-            projectId: "smartbook-2215",
-            storageBucket: "smartbook-2215.appspot.com",
-            messagingSenderId: "999113949935",
-            appId: "1:999113949935:web:97d7d78e7ccf3f1b68911a"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        Backendless.initApp("CCF35FD3-A2BC-4061-AE36-E776E9D35C1D", "1D1826F3-0850-4973-9C61-5E36022B1FD0");
 
         window.onload = () => {
             const welcomeText = document.getElementById('welcomeText');
@@ -153,13 +142,19 @@
         });
 
         document.getElementById('signupBtn').addEventListener('click', async () => {
+            const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                console.log('User signed up:', userCredential.user);
-                window.location.href = 'index.html';
+                const user = {
+                    username: username,
+                    email: email,
+                    password: password
+                };
+                const registeredUser = await Backendless.UserService.register(user);
+                console.log('User signed up:', registeredUser);
+                window.location.href = 'index.html'; // Redirect after successful signup
             } catch (error) {
                 console.error('Error signing up:', error.message);
                 alert(error.message);
