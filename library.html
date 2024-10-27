@@ -20,39 +20,44 @@
         h1 {
             font-size: 48px;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
-        p {
-            font-size: 18px;
-            color: #666;
-            text-align: center;
-            max-width: 600px;
-            line-height: 1.6;
+        .modules {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            width: 300px;
         }
 
         a {
-            margin-top: 20px;
             text-decoration: none;
             font-size: 20px;
             color: #fff;
-            background-color: #6a82fb;
-            padding: 10px 20px;
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            padding: 15px;
             border-radius: 10px;
+            text-align: center;
             transition: background-color 0.3s;
         }
 
         a:hover {
             background-color: #fc5c7d;
         }
+
+        .back-btn {
+            margin-top: 20px;
+            background-color: #333;
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Learning Library</h1>
-    <p>
-        Explore a variety of resources to enhance your learning journey. 
-        From articles to videos, find everything you need right here!
-    </p>
-    <a href="index.html">Back to Home</a>
+    <h1>Learning Library</h1>
+    <div class="modules">
+        <a href="Creating.html">Becoming a Creator on SL</a>
+        <a href="Blogging.html">Blogging for SL Brands</a>
+        <a href="RP.html">Roleplaying on SL</a>
+    </div>
+    <a href="index.html" class="back-btn">Back to Home</a>
 </body>
 </html>
