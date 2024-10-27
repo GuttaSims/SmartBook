@@ -99,25 +99,22 @@
         </div>
     </div>
 
-    <script src="https://backendless.com/sdk/js/latest/backendless.min.js"></script>
     <script>
-        // Initialize Backendless
-        Backendless.initApp('YOUR_APP_ID', 'YOUR_API_KEY');
+        const Backendless = require('backendless');
 
-        document.getElementById('loginBtn').addEventListener('click', function(event) {
-            event.preventDefault();
+        Backendless.initApp("CCF35FD3-A2BC-4061-AE36-E776E9D35C1D", "1D1826F3-0850-4973-9C61-5E36022B1FD0");
+
+        document.getElementById('loginBtn').addEventListener('click', async () => {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            Backendless.UserService.login(username, password, true)
-                .then(function(loggedInUser) {
-                    console.log('User logged in successfully:', loggedInUser);
-                    window.location.href = 'index.html'; // Redirect on success
-                })
-                .catch(function(error) {
-                    console.error('Login failed:', error);
-                    alert('Invalid username or password.'); // Show error message
-                });
+            try {
+                const user = await Backendless.UserService.login(username, password);
+                window.location.href = 'index.html'; // Redirect after successful login
+            } catch (error) {
+                console.error('Login error:', error.message);
+                alert('Invalid username or password.');
+            }
         });
     </script>
 </body>
