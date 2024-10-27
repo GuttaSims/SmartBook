@@ -91,6 +91,7 @@
     <div class="container">
         <div class="welcome-message" id="welcomeMessage">Welcome!</div>
         <div class="touch-start" id="touchStart">Touch To Start</div>
+        <h2 class="signup-header" id="signupHeader" style="display: none;">Sign Up To Get Started</h2>
         <form class="signup-form" id="signupForm" onsubmit="handleSignup(event)">
             <input type="text" name="firstName" placeholder="First Name" required><br>
             <input type="text" name="lastName" placeholder="Last Name" required><br>
@@ -107,20 +108,21 @@
             document.body.style.opacity = '1'; // Fade in body
             const welcomeMessage = document.getElementById('welcomeMessage');
             welcomeMessage.style.opacity = '1'; // Fade in welcome message
-
-            // Wait for a click on the welcome message
-            welcomeMessage.onclick = function() {
-                welcomeMessage.classList.add('fade-in'); // Make welcome message visible
-                showTouchStart(); // Show "Touch to Start"
-            };
+            
+            // Automatically show the touch start message after a delay
+            setTimeout(showTouchStart, 1000); // Wait 1 second before showing "Touch to Start"
         };
 
         function showTouchStart() {
             const touchStart = document.getElementById('touchStart');
             touchStart.classList.add('fade-in'); // Fade in "Touch to Start"
 
+            // Automatically show the signup header and form after clicking "Touch to Start"
             touchStart.onclick = function() {
-                touchStart.classList.add('fade-in'); // Make touch text visible
+                const signupHeader = document.getElementById('signupHeader');
+                signupHeader.style.display = 'block'; // Show the header
+                signupHeader.classList.add('fade-in'); // Fade in the header
+                
                 showSignupForm(); // Show the signup form after click
             };
         }
