@@ -6,7 +6,6 @@
     <title>Login</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Keep original CSS */
         body {
             display: flex;
             flex-direction: column;
@@ -69,16 +68,13 @@
             color: #6a82fb;
             text-decoration: none;
         }
-        .other-options {
-            margin-top: 15px;
-            font-size: 12px; /* Smaller text for additional options */
+        .other-signin {
+            font-size: 12px; /* Small text */
+            margin-top: 10px;
         }
-        .other-options a {
+        .other-signin a {
             color: #6a82fb;
             text-decoration: none;
-        }
-        .other-options a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
@@ -88,9 +84,9 @@
         <input type="password" id="password" class="input-field" placeholder="Password" required>
         <button id="loginBtn" class="submit-btn">Login</button>
 
-        <div class="other-options">
-            <p>Other Sign-In Options:</p>
-            <a href="forgot-password.html">Forgot Password?</a>
+        <div class="other-signin">
+            Other Sign-In Options: <br>
+            <a href="email-login.html">Sign in with Email</a>
         </div>
 
         <div class="login-link">
@@ -114,7 +110,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Check if the user is already logged in
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 window.location.href = 'index.html';
@@ -126,10 +121,7 @@
             const password = document.getElementById('password').value;
 
             try {
-                // Use the username as email for login (optional adjustment)
                 const email = `${username}@example.com`;
-
-                // Log the user in
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 window.location.href = 'index.html';
             } catch (error) {
