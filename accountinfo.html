@@ -30,7 +30,7 @@
             padding: 10px;
             border: 2px solid #ccc;
             border-radius: 5px;
-            width: 100%;
+            width: calc(100% - 20px);
             font-size: 16px;
             transition: border 0.3s;
         }
@@ -90,6 +90,7 @@
             margin: 10px 0;
             font-size: 16px;
             text-align: left;
+            width: calc(100% - 20px); /* Fit in container */
         }
     </style>
 </head>
@@ -210,7 +211,7 @@
             const userCredential = await auth.signInWithEmailAndPassword(user.email, currentPassword);
             if (userCredential) {
                 await userCredential.user.updatePassword(newPassword);
-                document.getElementById('feedbackMessage').innerText = 'Password Changed Successfully';
+                document.getElementById('feedbackMessage').innerText = 'Password Updated';
                 setTimeout(() => window.location.href = 'index.html', 2000);
             }
         });
