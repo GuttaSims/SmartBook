@@ -83,21 +83,37 @@
             box-shadow: 0 6px 20px rgba(106, 130, 251, 0.8), 
                         0 0 30px rgba(252, 92, 125, 0.9);
         }
+        .static-field {
+            background-color: #eaeaea;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 16px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Update Info</h2>
-        <input type="text" id="firstName" class="input-field" placeholder="First Name" required>
-        <input type="text" id="lastName" class="input-field" placeholder="Last Name" required>
+        <h2>User Info</h2>
+        <div class="static-field" id="firstNameDisplay">First Name: </div>
+        <div class="static-field" id="lastNameDisplay">Last Name: </div>
         <input type="text" id="username" class="input-field" placeholder="Username" required>
         <input type="email" id="email" class="input-field" placeholder="Email" required>
         
         <button id="updateInfoBtn" class="submit-btn">Update Info</button>
-        <button id="changePasswordBtn" class="submit-btn">Change Password</button>
-
+        
         <div id="feedbackMessage" class="success-message"></div>
         <div id="errorMessage" class="error-message"></div>
+    </div>
+
+    <div class="container">
+        <h2>Change Password</h2>
+        <input type="password" id="currentPassword" class="input-field" placeholder="Current Password" required>
+        <input type="password" id="newPassword" class="input-field" placeholder="New Password" required>
+        <input type="password" id="confirmNewPassword" class="input-field" placeholder="Confirm New Password" required>
+        
+        <button id="changePasswordBtn" class="submit-btn">Change Password</button>
     </div>
 
     <div class="container">
@@ -132,8 +148,8 @@
             onValue(userRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    document.getElementById('firstName').value = data.firstName || '';
-                    document.getElementById('lastName').value = data.lastName || '';
+                    document.getElementById('firstNameDisplay').innerText = 'First Name: ' + (data.firstName || '');
+                    document.getElementById('lastNameDisplay').innerText = 'Last Name: ' + (data.lastName || '');
                     document.getElementById('username').value = data.username || '';
                     document.getElementById('email').value = data.email || '';
                 }
@@ -142,13 +158,11 @@
 
         // Update Info
         document.getElementById('updateInfoBtn').addEventListener('click', async () => {
-            const firstName = document.getElementById('firstName').value.trim();
-            const lastName = document.getElementById('lastName').value.trim();
             const username = document.getElementById('username').value.trim();
             const email = document.getElementById('email').value.trim();
 
             let valid = true;
-            if (!firstName || !lastName || !username || !email) {
+            if (!username || !email) {
                 valid = false;
                 document.querySelectorAll('.input-field').forEach(input => {
                     if (!input.value.trim()) {
@@ -168,8 +182,6 @@
             if (valid) {
                 const userId = user.uid;
                 await set(ref(db, 'users/' + userId), {
-                    firstName,
-                    lastName,
                     username,
                     email
                 });
@@ -178,17 +190,36 @@
             }
         });
 
-        // Change Password (functionality not implemented here)
-        document.getElementById('changePasswordBtn').addEventListener('click', () => {
-            // Implement password change logic
+        // Change Password
+        document.getElementById('changePasswordBtn').addEventListener('click', async () => {
+            const currentPassword = document.getElementById('currentPassword').value.trim();
+            const newPassword = document.getElementById('newPassword').value.trim();
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
+
+            if (!currentPassword || !newPassword || !confirmNewPassword) {
+                document.getElementById('errorMessage').innerText = 'Field Required';
+                return;
+            }
+
+            if (newPassword !== confirmNewPassword) {
+                document.getElementById('errorMessage').innerText = 'Passwords do not match';
+                return;
+            }
+
+            // Logic to change the password using Firebase Auth
+            const userCredential = await auth.signInWithEmailAndPassword(user.email, currentPassword);
+            if (userCredential) {
+                await userCredential.user.updatePassword(newPassword);
+                document.getElementById('feedbackMessage').innerText = 'Password Changed Successfully';
+                setTimeout(() => window.location.href = 'index.html', 2000);
+            }
         });
 
         // Delete Account
         document.getElementById('deleteAccountBtn').addEventListener('click', async () => {
             const userId = user.uid;
-            const userRef = ref(db, 'users/' + userId);
-            await remove(userRef);
-            alert('Account Deleted');
+            await remove(ref(db, 'users/' + userId));
+            await auth.currentUser.delete();
             window.location.href = 'signup.html';
         });
 
