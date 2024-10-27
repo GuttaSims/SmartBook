@@ -11,12 +11,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: auto; /* Allow height to adjust based on content */
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             text-align: center;
             overflow: hidden;
             cursor: pointer;
+            padding: 20px; /* Added padding for mobile view */
         }
         h1 {
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
@@ -28,7 +29,8 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            width: 300px;
+            width: 100%;
+            max-width: 400px; /* Max width for larger screens */
             margin-bottom: 20px;
         }
         .input-field {
@@ -144,8 +146,8 @@
 
                 onValue(userRef, (snapshot) => {
                     const data = snapshot.val();
-                    document.getElementById('firstNameDisplay').innerText = data.firstName;
-                    document.getElementById('lastNameDisplay').innerText = data.lastName;
+                    document.getElementById('firstNameDisplay').innerText = data.firstName || "N/A";
+                    document.getElementById('lastNameDisplay').innerText = data.lastName || "N/A";
                     // Pre-fill the username and email inputs
                     document.getElementById('usernameInput').value = data.username || '';
                     document.getElementById('emailInput').value = data.email || '';
@@ -160,11 +162,12 @@
             const email = document.getElementById('emailInput').value.trim();
             const userId = auth.currentUser.uid;
 
-            let valid = true;
+            let valid = false;
             // Check if at least one field is filled
-            if (username === '' && email === '') {
+            if (username !== '' || email !== '') {
+                valid = true; // Set valid to true if at least one field is filled
+            } else {
                 alert('Field Required');
-                valid = false;
             }
 
             // Update the database if valid
@@ -207,7 +210,7 @@
                     window.location.href = 'index.html';
                 }, 2000);
             } catch (error) {
-                alert(error.message);
+                alert('Error updating password: ' + error.message);
             }
         });
 
@@ -216,9 +219,7 @@
         });
 
         document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-            const userId = auth.currentUser
-
-.uid;
+            const userId = auth.currentUser.uid;
             await remove(ref(db, 'users/' + userId));
             await auth.currentUser.delete();
             window.location.href = 'signup.html';
