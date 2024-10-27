@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-   <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
     <style>
         /* Same styles as before */
         body {
@@ -76,13 +76,18 @@
     <div class="form-container">
         <input type="email" id="loginEmail" class="input-field" placeholder="Email" required>
         <input type="password" id="loginPassword" class="input-field" placeholder="Password" required>
-        
+
         <!-- Remember Me Checkbox -->
         <label>
             <input type="checkbox" id="rememberMe"> Remember Me
         </label>
 
         <button id="loginBtn" class="submit-btn">Login</button>
+
+        <!-- Sign-up link -->
+        <div class="login-link">
+            Don’t have an account? <a href="signup.html">Sign up here</a>.
+        </div>
     </div>
 
     <script type="module">
