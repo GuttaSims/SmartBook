@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Account Info</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
@@ -51,22 +51,16 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to the Learning Portal!</h1>
-    <div id="userStatus"></div>
-    
-    <a href="library.html" class="button">Learning Library</a>
-    <a href="progress.html" class="button">Learning Progress</a>
-    <a href="accountinfo.html" class="button">Account Info</a>
-    <a href="help.html" class="button">Help</a>
+    <h1>Account Info</h1>
+    <div id="accountInfo"></div>
 
+    <a href="index.html" class="button">Back to Home</a>
     <button class="logout-btn" id="logoutBtn" style="display: none;">Logout</button>
 
     <script type="module">
-        // Firebase SDK
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 
-        // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
             authDomain: "smartbook-2215.firebaseapp.com",
@@ -76,28 +70,27 @@
             appId: "1:999113949935:web:97d7d78e7ccf3f1b68911a"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Check if user is logged in
+        // Check if the user is logged in
         onAuthStateChanged(auth, (user) => {
-            const userStatusDiv = document.getElementById('userStatus');
+            const accountInfoDiv = document.getElementById('accountInfo');
             const logoutButton = document.getElementById('logoutBtn');
 
             if (user) {
-                userStatusDiv.innerHTML = `<p>Hello, ${user.email}!</p>`;
-                logoutButton.style.display = 'block'; // Show logout button
+                accountInfoDiv.innerHTML = `<p>Email: ${user.email}</p>`;
+                logoutButton.style.display = 'block';
             } else {
-                userStatusDiv.innerHTML = `<p>You are not logged in. Please sign up or log in.</p>`;
-                logoutButton.style.display = 'none'; // Hide logout button
+                // Redirect to signup page if not logged in
+                window.location.href = "signup.html";
             }
         });
 
         // Logout function
         document.getElementById('logoutBtn').addEventListener('click', () => {
             signOut(auth).then(() => {
-                window.location.href = "signup.html"; // Redirect to signup page
+                window.location.href = "signup.html";
             }).catch((error) => {
                 alert(error.message);
             });
