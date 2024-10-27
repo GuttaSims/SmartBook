@@ -78,12 +78,31 @@
             font-size: 16px; /* Font size */
             cursor: pointer; /* Pointer cursor on hover */
             transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
+            animation: gradient-animation 3s infinite alternate; /* Animation */
         }
 
         button:hover {
             transform: translateY(-3px); /* Lift effect on hover */
             box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
                         0 0 30px rgba(252, 92, 125, 0.9); /* Enhanced glow on hover */
+        }
+
+        @keyframes gradient-animation {
+            0% {
+                background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            }
+            25% {
+                background: linear-gradient(145deg, #ff007f, #ff4b1f);
+            }
+            50% {
+                background: linear-gradient(145deg, #1e3c72, #2a5298);
+            }
+            75% {
+                background: linear-gradient(145deg, #ff6a00, #ee0979);
+            }
+            100% {
+                background: linear-gradient(145deg, #00c6ff, #0072ff);
+            }
         }
     </style>
 </head>
@@ -120,6 +139,9 @@
             // Automatically show the signup header and form after clicking "Touch to Start"
             touchStart.onclick = function() {
                 touchStart.style.display = 'none'; // Hide "Touch to Start"
+                const welcomeMessage = document.getElementById('welcomeMessage');
+                welcomeMessage.style.display = 'none'; // Hide "Welcome!"
+                
                 const signupHeader = document.getElementById('signupHeader');
                 signupHeader.style.display = 'block'; // Show the header
                 signupHeader.classList.add('fade-in'); // Fade in the header
