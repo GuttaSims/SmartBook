@@ -3,117 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Sign Up - Learning Platform</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f0f0;
+            height: 100vh;
+            background-color: #f0f0f0; /* Light background for contrast */
             font-family: Arial, sans-serif;
+            overflow: hidden; /* Prevent scrolling */
+            opacity: 0; /* Start hidden for fade effect */
+            transition: opacity 1s; /* Fade effect transition */
         }
 
-        .signup-container {
-            width: 400px;
-            padding: 40px;
-            border-radius: 15px;
-            background: linear-gradient(145deg, #e0e0e0, #ffffff);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
+        .container {
             text-align: center;
+            position: relative;
+        }
+
+        .welcome-message {
+            font-size: 32px;
+            color: #333;
             margin-bottom: 20px;
-            color: #444;
+            opacity: 0; /* Start hidden */
+            transition: opacity 1s; /* Fade effect transition */
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        .fade-in {
+            opacity: 1; /* Fade in */
         }
 
-        input[type="text"],
-        input[type="password"],
-        input[type="email"] {
-            width: 100%;
-            padding: 12px;
-            margin-top: 5px;
-            border: none;
-            border-radius: 10px;
-            background: #f9f9f9;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-            font-size: 16px;
-            transition: box-shadow 0.3s;
+        /* Hide the signup form initially */
+        .signup-form {
+            display: none; /* Start hidden */
+            opacity: 0; /* Start hidden */
+            transition: opacity 1s; /* Fade effect transition */
         }
 
-        input[type="text"]:focus,
-        input[type="password"]:focus,
-        input[type="email"]:focus {
-            outline: none;
-            box-shadow: 0 0 10px rgba(106, 130, 251, 0.6), 
-                        0 0 15px rgba(252, 92, 125, 0.7);
-        }
-
-        .signup-button {
-            width: 100%;
-            padding: 15px;
-            margin-top: 10px;
-            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .signup-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
-                        0 0 30px rgba(252, 92, 125, 0.9);
-        }
-
-        .login-link {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            color: #6a82fb;
-            text-decoration: none;
-        }
-
-        .login-link:hover {
-            text-decoration: underline;
+        .form-visible {
+            display: block; /* Show the form */
+            opacity: 1; /* Fade in */
         }
     </style>
 </head>
 <body>
-    <div class="signup-container">
-        <h2>Create an Account</h2>
-        <form action="process_signup.php" method="POST">
-            <div class="form-group">
-                <label for="first-name">First Name</label>
-                <input type="text" id="first-name" name="first_name" required>
-            </div>
-            <div class="form-group">
-                <label for="last-name">Last Name</label>
-                <input type="text" id="last-name" name="last_name" required>
-            </div>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" class="signup-button">Sign Up</button>
+    <div class="container">
+        <div class="welcome-message" id="welcomeMessage">Welcome! Touch To Start</div>
+        <form class="signup-form" id="signupForm" onsubmit="handleSignup(event)">
+            <input type="text" placeholder="First Name" required><br>
+            <input type="text" placeholder="Last Name" required><br>
+            <input type="text" placeholder="Username" required><br>
+            <input type="email" placeholder="Email" required><br>
+            <input type="password" placeholder="Password" required><br>
+            <button type="submit">Sign Up</button>
         </form>
     </div>
+
+    <script>
+        // Wait for the page to load
+        window.onload = function() {
+            document.body.style.opacity = '1'; // Fade in body
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            welcomeMessage.style.opacity = '1'; // Fade in message
+
+            // Wait for a click on the welcome message
+            welcomeMessage.onclick = function() {
+                welcomeMessage.classList.add('fade-in'); // Make message visible
+                showSignupForm(); // Show the signup form after click
+            };
+        };
+
+        function showSignupForm() {
+            const signupForm = document.getElementById('signupForm');
+            signupForm.classList.add('form-visible'); // Show signup form
+            signupForm.style.display = 'block'; // Make it visible
+        }
+
+        function handleSignup(event) {
+            event.preventDefault(); // Prevent the default form submission
+            alert("Sign Up functionality to be implemented!");
+            // Here, you would typically handle the form data (e.g., save to a database)
+        }
+    </script>
 </body>
 </html>
