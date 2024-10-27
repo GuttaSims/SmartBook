@@ -3,58 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Website</title>
+    <title>Shiny Button Example</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-color: #f0f0f0; /* Light background for contrast */
+            font-family: Arial, sans-serif;
         }
+
         .container {
-            display: grid;
-            grid-template-columns: repeat(2, 150px);
-            gap: 20px;
+            text-align: center;
         }
+
         .button {
-            width: 150px;
-            height: 150px;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 18px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.3s;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6); /* Light gradient */
+            border: 1px solid #ccc; /* Light border */
+            border-radius: 10px; /* Rounded corners */
+            padding: 10px 20px;
+            color: #333; /* Dark text color */
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            box-shadow: 5px 5px 10px #b0b0b0, 
+                        -5px -5px 10px #ffffff; /* Soft shadows for 3D effect */
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s; /* Smooth transitions */
         }
+
         .button:hover {
-            transform: scale(1.05);
-        }
-        .library {
-            background-color: #4CAF50; /* Green */
-        }
-        .progress {
-            background-color: #2196F3; /* Blue */
-        }
-        .account {
-            background-color: #FF9800; /* Orange */
-        }
-        .help {
-            background-color: #F44336; /* Red */
+            transform: translateY(-3px); /* Lift effect on hover */
+            box-shadow: 3px 3px 8px #b0b0b0, 
+                        -3px -3px 8px #ffffff; /* Slightly reduced shadow on hover */
+            background: linear-gradient(145deg, #e6e6e6, #ffffff); /* Reverse gradient on hover */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <button class="button library" onclick="window.location.href='topic-library.html'">Topic Library</button>
-        <button class="button progress" onclick="window.location.href='learning-progress.html'">Learning Progress</button>
-        <button class="button account" onclick="window.location.href='account-info.html'">Account Info</button>
-        <button class="button help" onclick="window.location.href='help.html'">Help</button>
+        <a href="#" class="button">Click Me!</a>
     </div>
 </body>
 </html>
