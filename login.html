@@ -99,40 +99,25 @@
         </div>
     </div>
 
-    <script type="module">
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+    <script src="https://backendless.com/sdk/js/latest/backendless.min.js"></script>
+    <script>
+        // Initialize Backendless
+        Backendless.initApp('YOUR_APP_ID', 'YOUR_API_KEY');
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
-            authDomain: "smartbook-2215.firebaseapp.com",
-            projectId: "smartbook-2215",
-            storageBucket: "smartbook-2215.appspot.com",
-            messagingSenderId: "999113949935",
-            appId: "1:999113949935:web:97d7d78e7ccf3f1b68911a"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.location.href = 'index.html';
-            }
-        });
-
-        document.getElementById('loginBtn').addEventListener('click', async () => {
+        document.getElementById('loginBtn').addEventListener('click', function(event) {
+            event.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            try {
-                const email = `${username}@example.com`; // Treat username as email
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                window.location.href = 'index.html';
-            } catch (error) {
-                console.error('Login error:', error.message);
-                alert('Invalid username or password.');
-            }
+            Backendless.UserService.login(username, password, true)
+                .then(function(loggedInUser) {
+                    console.log('User logged in successfully:', loggedInUser);
+                    window.location.href = 'index.html'; // Redirect on success
+                })
+                .catch(function(error) {
+                    console.error('Login failed:', error);
+                    alert('Invalid username or password.'); // Show error message
+                });
         });
     </script>
 </body>
