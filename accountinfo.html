@@ -16,7 +16,6 @@
             font-family: Arial, sans-serif;
             text-align: center;
             overflow: hidden;
-            cursor: pointer;
         }
         h1 {
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
@@ -28,7 +27,8 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            width: 300px;
+            width: 90%;  /* Adjusted width for better fit */
+            max-width: 400px; /* Set a reasonable max-width */
             margin-bottom: 20px;
         }
         .input-field {
@@ -36,7 +36,8 @@
             padding: 10px;
             border: 2px solid #ccc;
             border-radius: 5px;
-            width: 100%;
+            width: 100%; /* Make input fields fill the container width */
+            box-sizing: border-box; /* Ensure padding doesn't overflow */
             font-size: 16px;
             transition: border 0.3s;
         }
@@ -52,7 +53,7 @@
             color: #fff;
             font-size: 16px;
             cursor: pointer;
-            width: 100%;
+            width: 100%; /* Ensure buttons also fit the container */
             transition: transform 0.3s, box-shadow 0.3s;
             margin-top: 10px;
         }
@@ -71,7 +72,7 @@
             background: rgba(0, 0, 0, 0.5);
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(5px); /* Blur effect */
+            backdrop-filter: blur(5px);
         }
         .popup-content {
             background: white;
@@ -205,8 +206,8 @@
             deletePopup.style.display = 'none';
         });
 
-        document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-            await auth.currentUser.delete();
+        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+            // Add delete account logic here
             window.location.href = 'signup.html';
         });
 
