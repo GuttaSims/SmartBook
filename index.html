@@ -7,37 +7,44 @@
     <style>
         body {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0; /* Light background for contrast */
             font-family: Arial, sans-serif;
+            margin: 0;
         }
 
         .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columns layout */
+            gap: 20px; /* Space between buttons */
             text-align: center;
         }
 
         .button {
             background: linear-gradient(145deg, #6a82fb, #fc5c7d); /* Gradient background */
             border: none; /* No border for a cleaner look */
-            border-radius: 10px; /* Rounded corners */
-            padding: 10px 20px;
+            border-radius: 15px; /* Rounded corners */
             color: #fff; /* White text color */
             text-align: center;
             text-decoration: none;
-            font-size: 16px;
-            margin: 10px; /* Space between buttons */
+            font-size: 24px;
+            font-weight: bold;
+            width: 200px;
+            height: 200px; /* Square shape */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             box-shadow: 0 4px 15px rgba(106, 130, 251, 0.5), 
                         0 0 25px rgba(252, 92, 125, 0.7); /* Glow effect */
             transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
         }
 
         .button:hover {
-            transform: translateY(-3px); /* Lift effect on hover */
+            transform: translateY(-5px); /* Lift effect on hover */
             box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
-                        0 0 30px rgba(252, 92, 125, 0.9); /* Enhanced glow on hover */
+                        0 0 35px rgba(252, 92, 125, 0.9); /* Enhanced glow on hover */
         }
     </style>
 </head>
