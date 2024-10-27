@@ -69,6 +69,17 @@
             color: #6a82fb;
             text-decoration: none;
         }
+        .other-options {
+            margin-top: 15px;
+            font-size: 12px; /* Smaller text for additional options */
+        }
+        .other-options a {
+            color: #6a82fb;
+            text-decoration: none;
+        }
+        .other-options a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -76,6 +87,11 @@
         <input type="text" id="username" class="input-field" placeholder="Username" required>
         <input type="password" id="password" class="input-field" placeholder="Password" required>
         <button id="loginBtn" class="submit-btn">Login</button>
+
+        <div class="other-options">
+            <p>Other Sign-In Options:</p>
+            <a href="forgot-password.html">Forgot Password?</a>
+        </div>
 
         <div class="login-link">
             Don’t have an account? <a href="signup.html">Sign up here</a>.
