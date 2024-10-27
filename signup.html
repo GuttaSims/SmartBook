@@ -30,32 +30,73 @@
             transition: opacity 1s; /* Fade effect transition */
         }
 
+        .touch-start {
+            font-size: 24px;
+            background: linear-gradient(145deg, #ff6a00, #ee0979); /* Gradient background */
+            -webkit-background-clip: text; /* Clip gradient to text */
+            -webkit-text-fill-color: transparent; /* Make text color transparent */
+            opacity: 0; /* Start hidden */
+            transition: opacity 1s; /* Fade effect transition */
+        }
+
         .fade-in {
             opacity: 1; /* Fade in */
         }
 
-        /* Hide the signup form initially */
+        /* Form styling */
         .signup-form {
             display: none; /* Start hidden */
             opacity: 0; /* Start hidden */
             transition: opacity 1s; /* Fade effect transition */
+            margin-top: 20px;
         }
 
         .form-visible {
             display: block; /* Show the form */
             opacity: 1; /* Fade in */
         }
+
+        input {
+            border: 2px solid #ccc; /* Input border */
+            border-radius: 10px; /* Rounded corners */
+            padding: 10px; /* Padding inside inputs */
+            width: 250px; /* Input width */
+            margin: 10px 0; /* Space between inputs */
+            transition: border 0.3s; /* Transition for border */
+        }
+
+        input:focus {
+            border-color: #ff6a00; /* Change border color on focus */
+        }
+
+        button {
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d); /* Gradient background */
+            border: none; /* No border */
+            border-radius: 10px; /* Rounded corners */
+            padding: 10px 20px; /* Button padding */
+            color: #fff; /* White text color */
+            font-size: 16px; /* Font size */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
+        }
+
+        button:hover {
+            transform: translateY(-3px); /* Lift effect on hover */
+            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
+                        0 0 30px rgba(252, 92, 125, 0.9); /* Enhanced glow on hover */
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="welcome-message" id="welcomeMessage">Welcome! Touch To Start</div>
+        <div class="welcome-message" id="welcomeMessage">Welcome!</div>
+        <div class="touch-start" id="touchStart">Touch To Start</div>
         <form class="signup-form" id="signupForm" onsubmit="handleSignup(event)">
-            <input type="text" placeholder="First Name" required><br>
-            <input type="text" placeholder="Last Name" required><br>
-            <input type="text" placeholder="Username" required><br>
-            <input type="email" placeholder="Email" required><br>
-            <input type="password" placeholder="Password" required><br>
+            <input type="text" name="firstName" placeholder="First Name" required><br>
+            <input type="text" name="lastName" placeholder="Last Name" required><br>
+            <input type="text" name="username" placeholder="Username" required><br>
+            <input type="email" name="email" placeholder="Email" required><br>
+            <input type="password" name="password" placeholder="Password" required><br>
             <button type="submit">Sign Up</button>
         </form>
     </div>
@@ -65,14 +106,24 @@
         window.onload = function() {
             document.body.style.opacity = '1'; // Fade in body
             const welcomeMessage = document.getElementById('welcomeMessage');
-            welcomeMessage.style.opacity = '1'; // Fade in message
+            welcomeMessage.style.opacity = '1'; // Fade in welcome message
 
             // Wait for a click on the welcome message
             welcomeMessage.onclick = function() {
-                welcomeMessage.classList.add('fade-in'); // Make message visible
-                showSignupForm(); // Show the signup form after click
+                welcomeMessage.classList.add('fade-in'); // Make welcome message visible
+                showTouchStart(); // Show "Touch to Start"
             };
         };
+
+        function showTouchStart() {
+            const touchStart = document.getElementById('touchStart');
+            touchStart.classList.add('fade-in'); // Fade in "Touch to Start"
+
+            touchStart.onclick = function() {
+                touchStart.classList.add('fade-in'); // Make touch text visible
+                showSignupForm(); // Show the signup form after click
+            };
+        }
 
         function showSignupForm() {
             const signupForm = document.getElementById('signupForm');
