@@ -16,6 +16,7 @@
             font-family: Arial, sans-serif;
             text-align: center;
             overflow: hidden; /* Prevents overflow during animation */
+            cursor: pointer; /* Changes cursor to pointer */
         }
 
         h1 {
@@ -45,6 +46,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             margin-top: 20px;
+            width: 300px; /* Fixed width for consistency */
         }
 
         .input-field {
@@ -52,7 +54,7 @@
             padding: 10px;
             border: 2px solid #ccc;
             border-radius: 5px;
-            width: 250px;
+            width: 100%; /* Full width of the form */
             font-size: 16px;
             transition: border-color 0.3s;
         }
@@ -71,6 +73,7 @@
             margin: 10px 0;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%; /* Full width of the form */
         }
 
         .submit-btn:hover {
@@ -120,8 +123,8 @@
             }, 2000); // Show after 2 seconds
         };
 
-        // Handle click event on "Welcome!" to show the form
-        document.querySelector('h1').addEventListener('click', () => {
+        // Handle click event on the body to show the form
+        document.body.addEventListener('click', () => {
             document.getElementById('formContainer').style.display = 'block'; // Show the form
             document.getElementById('fadeIn').style.display = 'none'; // Hide the "Touch To Start" text
         });
