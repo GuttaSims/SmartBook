@@ -124,7 +124,7 @@
     </div>
 
     <script type="module">
-        import { getAuth, onAuthStateChanged, updateEmail, updatePassword, deleteUser } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, updateEmail, updatePassword, deleteUser, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
         import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 
@@ -180,19 +180,21 @@
                 if (newEmail) {
                     updateEmail(user, newEmail).then(() => {
                         updates.email = newEmail;
-                        const userRef = ref(db, 'users/' + userId);
-                        update(userRef, updates).then(() => {
-                            alert("User info updated successfully!");
-                            window.location.reload(); // Refresh to show updated info
-                        }).catch((error) => {
-                            console.error("Error updating user info:", error);
-                            alert(error.message);
-                        });
                     }).catch((error) => {
                         console.error("Error updating email:", error);
                         alert(error.message);
                     });
                 }
+
+                // Update user info in database
+                const userRef = ref(db, 'users/' + userId);
+                update(userRef, updates).then(() => {
+                    alert("User info updated successfully!");
+                    window.location.href = 'index.html'; // Redirect to homepage
+                }).catch((error) => {
+                    console.error("Error updating user info:", error);
+                    alert(error.message);
+                });
             }
         });
 
@@ -210,15 +212,14 @@
                 user.reauthenticateWithCredential(credential).then(() => {
                     updatePassword(user, newPassword).then(() => {
                         alert("Password changed successfully!");
+                        window.location.href = 'index.html'; // Redirect to homepage
                     }).catch((error) => {
                         console.error("Error changing password:", error);
                         alert(error.message);
                     });
                 }).catch((error) => {
                     console.error("Error reauthenticating:", error);
-                    alert
-
-(error.message);
+                    alert(error.message);
                 });
             } else {
                 alert("New passwords do not match.");
@@ -236,7 +237,7 @@
             if (user) {
                 deleteUser(user).then(() => {
                     alert("Account deleted successfully.");
-                    window.location.href = 'signup.html';
+                    window.location.href = 'signup.html'; // Redirect to signup after deletion
                 }).catch((error) => {
                     console.error("Error deleting account:", error);
                     alert(error.message);
