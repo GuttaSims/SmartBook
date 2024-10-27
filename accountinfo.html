@@ -70,6 +70,10 @@
             width: calc(100% - 22px);
             border: 1px solid #ccc;
             border-radius: 5px;
+            transition: border 0.3s;
+        }
+        input.error {
+            border: 1px solid red; /* Red border for error */
         }
         button {
             padding: 10px;
@@ -88,6 +92,13 @@
             color: #4caf50;
             font-size: 12px;
             text-align: center;
+            display: none; /* Hidden by default */
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
             display: none; /* Hidden by default */
         }
         #confirmationPopup {
@@ -129,6 +140,7 @@
         <input type="text" id="newUsername" placeholder="New Username" required>
         <button id="updateInfoBtn">Update Info</button>
         <p class="success-message" id="updateSuccess">Update Complete</p>
+        <p class="error-message" id="fieldRequiredError">Field Required</p>
 
         <h2>Change Password</h2>
         <input type="password" id="currentPassword" placeholder="Current Password" required>
@@ -156,6 +168,18 @@
         document.getElementById('updateInfoBtn').addEventListener('click', () => {
             const newUsername = document.getElementById('newUsername').value;
             const user = auth.currentUser;
+
+            // Clear previous error messages and styles
+            document.getElementById('fieldRequiredError').style.display = 'none';
+            document.getElementById('newUsername').classList.remove('error');
+
+            if (!newUsername) {
+                // Show error if field is empty
+                document.getElementById('fieldRequiredError').style.display = 'block';
+                document.getElementById('newUsername').classList.add('error');
+                return; // Stop execution if the field is empty
+            }
+
             if (user) {
                 const userId = user.uid;
                 update(ref(db, 'users/' + userId), {
@@ -178,20 +202,39 @@
             const confirmPassword = document.getElementById('confirmPassword').value;
             const user = auth.currentUser;
 
+            // Clear previous error messages and styles
+            document.getElementById('fieldRequiredError').style.display = 'none';
+            document.getElementById('currentPassword').classList.remove('error');
+            document.getElementById('newPassword').classList.remove('error');
+            document.getElementById('confirmPassword').classList.remove('error');
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                // Show error if any field is empty
+                document.getElementById('fieldRequiredError').style.display = 'block';
+                if (!currentPassword) document.getElementById('currentPassword').classList.add('error');
+                if (!newPassword) document.getElementById('newPassword').classList.add('error');
+                if (!confirmPassword) document.getElementById('confirmPassword').classList.add('error');
+                return; // Stop execution if any field is empty
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert("New Password and Confirm Password do not match.");
+                return;
+            }
+
             if (user) {
-                // Reauthenticate user to change password
+                // Re-authenticate the user with the current password before changing the password
                 const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
                 user.reauthenticateWithCredential(credential).then(() => {
-                    // Update password
                     user.updatePassword(newPassword).then(() => {
-                        alert("Password changed successfully!");
-                        window.location.href = 'index.html'; // Redirect to homepage
+                        alert("Password changed successfully.");
+                        window.location.href = 'index.html'; // Redirect to homepage after success
                     }).catch((error) => {
                         console.error("Error changing password:", error);
                         alert(error.message);
                     });
                 }).catch((error) => {
-                    console.error("Error reauthenticating:", error);
+                    console.error("Error re-authenticating:", error);
                     alert("Current password is incorrect.");
                 });
             }
@@ -202,28 +245,27 @@
             document.getElementById('blur').style.display = 'block';
         });
 
+        document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+            document.getElementById('confirmationPopup').style.display = 'none';
+            document.getElementById('blur').style.display = 'none';
+        });
+
         document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
             const user = auth.currentUser;
             if (user) {
                 const userId = user.uid;
                 remove(ref(db, 'users/' + userId)).then(() => {
                     user.delete().then(() => {
-                        alert("Account deleted successfully!");
-                        window.location.href = 'signup.html'; // Redirect to signup page
+                        alert("Account deleted successfully.");
+                        window.location.href = 'signup.html'; // Redirect to signup page after deletion
                     }).catch((error) => {
                         console.error("Error deleting account:", error);
                         alert(error.message);
                     });
                 }).catch((error) => {
                     console.error("Error removing user data:", error);
-                    alert(error.message);
                 });
             }
-        });
-
-        document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
-            document.getElementById('confirmationPopup').style.display = 'none';
-            document.getElementById('blur').style.display = 'none';
         });
     </script>
 </body>
