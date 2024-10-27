@@ -105,7 +105,7 @@
         <button id="updateInfoBtn" class="submit-btn">Update Info</button>
         
         <div id="feedbackMessage" class="success-message"></div>
-        <div id="errorMessage" class="error-message"></div>
+        <div id="errorMessageUserInfo" class="error-message"></div>
     </div>
 
     <div class="container">
@@ -115,6 +115,7 @@
         <input type="password" id="confirmNewPassword" class="input-field" placeholder="Confirm New Password" required>
         
         <button id="changePasswordBtn" class="submit-btn">Change Password</button>
+        <div id="errorMessageChangePassword" class="error-message"></div>
     </div>
 
     <div class="container">
@@ -168,16 +169,16 @@
                 document.querySelectorAll('.input-field').forEach(input => {
                     if (!input.value.trim()) {
                         input.classList.add('input-error');
+                        document.getElementById('errorMessageUserInfo').innerText = 'Field Required';
                     } else {
                         input.classList.remove('input-error');
                     }
                 });
-                document.getElementById('errorMessage').innerText = 'Field Required';
             } else {
                 document.querySelectorAll('.input-field').forEach(input => {
                     input.classList.remove('input-error');
                 });
-                document.getElementById('errorMessage').innerText = '';
+                document.getElementById('errorMessageUserInfo').innerText = '';
             }
 
             if (valid) {
@@ -197,22 +198,37 @@
             const newPassword = document.getElementById('newPassword').value.trim();
             const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
 
+            let valid = true;
             if (!currentPassword || !newPassword || !confirmNewPassword) {
-                document.getElementById('errorMessage').innerText = 'Field Required';
-                return;
+                valid = false;
+                document.querySelectorAll('#currentPassword, #newPassword, #confirmNewPassword').forEach(input => {
+                    if (!input.value.trim()) {
+                        input.classList.add('input-error');
+                        document.getElementById('errorMessageChangePassword').innerText = 'Field Required';
+                    } else {
+                        input.classList.remove('input-error');
+                    }
+                });
+            } else {
+                document.querySelectorAll('#currentPassword, #newPassword, #confirmNewPassword').forEach(input => {
+                    input.classList.remove('input-error');
+                });
+                document.getElementById('errorMessageChangePassword').innerText = '';
             }
 
-            if (newPassword !== confirmNewPassword) {
-                document.getElementById('errorMessage').innerText = 'Passwords do not match';
-                return;
-            }
+            if (valid) {
+                if (newPassword !== confirmNewPassword) {
+                    document.getElementById('errorMessageChangePassword').innerText = 'Passwords do not match';
+                    return;
+                }
 
-            // Logic to change the password using Firebase Auth
-            const userCredential = await auth.signInWithEmailAndPassword(user.email, currentPassword);
-            if (userCredential) {
-                await userCredential.user.updatePassword(newPassword);
-                document.getElementById('feedbackMessage').innerText = 'Password Updated';
-                setTimeout(() => window.location.href = 'index.html', 2000);
+                await auth.signInWithEmailAndPassword(user.email, currentPassword).then(async () => {
+                    await user.updatePassword(newPassword);
+                    document.getElementById('errorMessageChangePassword').innerText = 'Password Updated';
+                    setTimeout(() => window.location.href = 'index.html', 2000);
+                }).catch((error) => {
+                    document.getElementById('errorMessageChangePassword').innerText = error.message;
+                });
             }
         });
 
