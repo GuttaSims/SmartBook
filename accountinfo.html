@@ -188,22 +188,24 @@
         const auth = getAuth(app);
 
         // Fetch user info and display it
-        const userId = auth.currentUser.uid;
-        const userRef = ref(db, 'users/' + userId);
+        const userId = auth.currentUser ? auth.currentUser.uid : null;
+        if (userId) {
+            const userRef = ref(db, 'users/' + userId);
 
-        get(userRef).then((snapshot) => {
-            if (snapshot.exists()) {
-                const userData = snapshot.val();
-                document.getElementById('firstName').innerText = userData.firstName;
-                document.getElementById('lastName').innerText = userData.lastName;
-                document.getElementById('username').value = userData.username;
-                document.getElementById('email').value = userData.email;
-            } else {
-                console.log("No user data available");
-            }
-        }).catch((error) => {
-            console.error("Error fetching user data:", error);
-        });
+            get(userRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    document.getElementById('firstName').innerText = userData.firstName;
+                    document.getElementById('lastName').innerText = userData.lastName;
+                    document.getElementById('username').value = userData.username;
+                    document.getElementById('email').value = userData.email;
+                } else {
+                    console.log("No user data available");
+                }
+            }).catch((error) => {
+                console.error("Error fetching user data:", error);
+            });
+        }
 
         // Update Info
         document.getElementById('updateInfo').addEventListener('click', () => {
@@ -231,7 +233,7 @@
             }
 
             // Update user info in database
-            set(userRef, {
+            set(ref(db, 'users/' + userId), {
                 username: username,
                 email: email,
                 firstName: document.getElementById('firstName').innerText,
@@ -298,13 +300,15 @@
 
         // Delete Account
         document.getElementById('deleteAccount').addEventListener('click', () => {
+            console.log("Delete Account button clicked."); // Debug log
             document.getElementById('deletePopup').style.display = 'flex';
         });
 
         document.getElementById('confirmDelete').addEventListener('click', () => {
             const user = auth.currentUser;
             if (user) {
-                remove(userRef).then(() => {
+                remove(ref(db, 'users/' + user.uid)).then(() => {
+                    console.log("User data deleted from database."); // Debug log
                     // Delete user from Firebase Authentication
                     user.delete().then(() => {
                         window.location.href = "signup.html"; // Redirect to signup page
@@ -318,6 +322,7 @@
         });
 
         document.getElementById('cancelDelete').addEventListener('click', () => {
+            console.log("Cancel Delete button clicked."); // Debug log
             document.getElementById('deletePopup').style.display = 'none';
         });
 
