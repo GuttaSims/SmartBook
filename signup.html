@@ -25,7 +25,8 @@
             -webkit-text-fill-color: transparent;
             font-size: 48px;
             margin: 0;
-            transition: opacity 0.5s ease;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 1s ease; /* Smooth transition */
         }
 
         #fadeIn {
@@ -35,8 +36,8 @@
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            opacity: 0;
-            transition: opacity 1s ease;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 1s ease; /* Smooth transition */
         }
 
         .form-container {
@@ -136,20 +137,19 @@
 
             // Fade in the Welcome text
             setTimeout(() => {
-                welcomeText.style.opacity = '1';
-                // After Welcome fades in, show "Touch To Start"
+                welcomeText.style.opacity = '1'; // Fade in Welcome
                 setTimeout(() => {
-                    fadeInText.style.display = 'block';
+                    fadeInText.style.display = 'block'; // Show "Touch to Start"
                     setTimeout(() => {
-                        fadeInText.style.opacity = '1';
+                        fadeInText.style.opacity = '1'; // Fade in "Touch to Start"
                     }, 500); // Delay for fade-in effect
-                }, 1000); // Delay for the "Welcome" to stay on screen
+                }, 1000); // Delay to keep "Welcome" visible
             }, 500); // Initial delay before "Welcome" fades in
         };
 
         document.body.addEventListener('click', () => {
-            document.getElementById('formContainer').style.display = 'block';
-            document.getElementById('fadeIn').style.display = 'none';
+            document.getElementById('formContainer').style.display = 'block'; // Show the form container
+            document.getElementById('fadeIn').style.display = 'none'; // Hide "Touch to Start"
         });
 
         document.getElementById('signupBtn').addEventListener('click', async () => {
