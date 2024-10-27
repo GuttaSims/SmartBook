@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         * {
             box-sizing: border-box;
@@ -81,43 +82,57 @@
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>Login</h1>
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        
+    <div class="form-container">
+        <input type="text" id="username" class="input-field" placeholder="Username" required>
+        <input type="password" id="password" class="input-field" placeholder="Password" required>
         <div class="remember-me">
-            <input type="checkbox" id="rememberMe">
-            <label for="rememberMe">Remember Me</label>
+            <input type="checkbox" id="rememberMe"> Remember Me
         </div>
-        
-        <button id="loginButton">Log In</button>
-        
-        <div class="options">
-            <p>Other Sign In Options:</p>
-            <a href="altlogin.html">Email</a>
-            <p><a href="signup.html">Sign Up</a></p>
+        <button id="loginBtn" class="submit-btn">Login</button>
+
+        <div class="forgot-password"><a href="forgot-password.html">Forgot Password?</a></div>
+        <div class="login-link">
+            Don’t have an account? <a href="signup.html">Sign up here</a>.
+        </div>
+        <div class="login-link">
+            Other Sign-In Options: <a href="altlogin.html">Email</a>
         </div>
     </div>
 
-    <script>
-        // Backendless credentials
-        Backendless.initApp('YOUR_APP_ID', 'YOUR_API_KEY');
+    <script type="module">
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 
-        document.getElementById('loginButton').addEventListener('click', function() {
+        const firebaseConfig = {
+            apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
+            authDomain: "smartbook-2215.firebaseapp.com",
+            projectId: "smartbook-2215",
+            storageBucket: "smartbook-2215.appspot.com",
+            messagingSenderId: "999113949935",
+            appId: "1:999113949935:web:97d7d78e7ccf3f1b68911a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', async () => {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            Backendless.UserService.login(username, password, true)
-                .then(function(loggedInUser) {
-                    console.log('User logged in successfully:', loggedInUser);
-                    // Redirect to another page or show success message
-                })
-                .catch(function(error) {
-                    console.error('Login failed:', error);
-                    alert('Login failed. Please check your username and password.');
-                });
+            try {
+                const email = `${username}@example.com`; // Treat username as email
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Login error:', error.message);
+                alert('Invalid username or password.');
+            }
         });
     </script>
 </body>
