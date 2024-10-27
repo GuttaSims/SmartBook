@@ -15,7 +15,6 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             text-align: center;
-            overflow: hidden;
             padding: 20px; /* Add padding for mobile */
         }
         h1 {
@@ -171,7 +170,7 @@
 
     <script type="module">
         import { getDatabase, ref, get, set, remove } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
-        import { getAuth, updateEmail, updatePassword } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getAuth, updatePassword } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 
         const firebaseConfig = {
