@@ -62,11 +62,13 @@
         <input type="password" id="confirmPassword" class="input-field" placeholder="Confirm New Password">
         
         <button id="changePassword" class="submit-btn">Change Password</button>
+        <button id="backToHome" class="submit-btn">Back To Home</button>
     </div>
 
     <script type="module">
-        import { getAuth, updateEmail, updatePassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getAuth, updateEmail, updatePassword, onAuthStateChanged, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
@@ -79,19 +81,21 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
         // Display user's account info
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const firstName = user.displayName.split(' ')[0]; // Assuming displayName is in 'First Last' format
-                const lastName = user.displayName.split(' ')[1]; // Assuming displayName is in 'First Last' format
-                const username = "user's username"; // Fetch the username from your database
-                const email = user.email;
-
-                document.getElementById('firstNameDisplay').textContent = firstName;
-                document.getElementById('lastNameDisplay').textContent = lastName;
-                document.getElementById('username').value = username;
-                document.getElementById('email').value = email;
+                const userDoc = doc(db, "users", user.uid); // Assuming user info is stored in 'users' collection
+                const userSnapshot = await getDoc(userDoc);
+                
+                if (userSnapshot.exists()) {
+                    const userData = userSnapshot.data();
+                    document.getElementById('firstNameDisplay').textContent = userData.firstName;
+                    document.getElementById('lastNameDisplay').textContent = userData.lastName;
+                    document.getElementById('username').value = userData.username; // Ensure this field is editable
+                    document.getElementById('email').value = user.email;
+                }
             } else {
                 // User is signed out, redirect to login page
                 window.location.href = 'login.html';
@@ -101,13 +105,17 @@
         // Update user information
         document.getElementById('updateInfo').addEventListener('click', async () => {
             const newEmail = document.getElementById('email').value;
-            const newUsername = document.getElementById('username').value; // This should also be updated in your database
+            const newUsername = document.getElementById('username').value;
 
             try {
                 const user = auth.currentUser;
                 if (user) {
                     await updateEmail(user, newEmail);
-                    // Update username in your database here
+
+                    // Update username in Firestore
+                    const userDoc = doc(db, "users", user.uid);
+                    await updateDoc(userDoc, { username: newUsername });
+
                     alert("User info updated successfully!");
                 }
             } catch (error) {
@@ -142,6 +150,11 @@
                 console.error('Error changing password:', error.message);
                 alert(error.message);
             }
+        });
+
+        // Back to Home button
+        document.getElementById('backToHome').addEventListener('click', () => {
+            window.location.href = 'index.html'; // Adjust the link as needed
         });
     </script>
 </body>
