@@ -1,63 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up</title>
-  <script src="https://cdn.backendless.com/sdk/js/latest/backendless.min.js"></script>
-  <style>
-    /* Reusing the same styles */
-    body, .container, input, button, a {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-  </style>
-  <script>
-    Backendless.initApp("smartbook-2215", "AiZaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc");
-
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("signupForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const username = document.getElementById("username").value;
-
-        const newUser = { email, password, username };
-
-        try {
-          await Backendless.UserService.register(newUser);
-          alert("Registration successful! You can now log in.");
-          window.location.href = "login.html";
-        } catch (error) {
-          alert("Sign-up failed: " + error.message);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
         }
-      });
-    });
-  </script>
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .options {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .options a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .options a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Sign Up</h1>
-    <form id="signupForm">
-      <label for="username">Username:</label>
-      <input type="text" id="username" required><br>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" required><br>
+    <div class="container">
+        <h1>Sign Up</h1>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        
+        <button id="signupButton">Sign Up</button>
+        
+        <div class="options">
+            <p>Already have an account? <a href="login.html">Log In</a></p>
+        </div>
+    </div>
 
-      <label for="password">Password:</label>
-      <input type="password" id="password" required><br>
+    <script>
+        // Backendless credentials
+        Backendless.initApp('YOUR_APP_ID', 'YOUR_API_KEY');
 
-      <button type="submit">Sign Up</button>
-    </form>
-    <p><a href="login.html">Already have an account? Login</a></p>
-  </div>
+        document.getElementById('signupButton').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const user = new Backendless.User();
+            user.username = username;
+            user.email = email;
+            user.password = password;
+
+            Backendless.UserService.register(user)
+                .then(function(registeredUser) {
+                    console.log('User registered successfully:', registeredUser);
+                    alert('Registration successful! You can now log in.');
+                    window.location.href = 'login.html'; // Redirect to login page after successful signup
+                })
+                .catch(function(error) {
+                    console.error('Registration failed:', error);
+                    alert('Registration failed. Please check your details and try again.');
+                });
+        });
+    </script>
 </body>
 </html>
