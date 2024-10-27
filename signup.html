@@ -6,47 +6,63 @@
     <title>Sign Up</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Same styles as before */
         body {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #f0f0f0; /* Light background for contrast */
             font-family: Arial, sans-serif;
             text-align: center;
-            overflow: hidden;
-            cursor: pointer;
+            overflow: hidden; /* Prevents overflow during animation */
+            cursor: pointer; /* Changes cursor to pointer */
         }
-        h1, #fadeIn {
+
+        h1 {
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            transition: opacity 1s ease;
+            font-size: 48px;
+            margin: 0;
+            transition: opacity 0.5s ease;
         }
+
         #fadeIn {
             display: none;
             font-size: 24px;
             margin-top: 20px;
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             opacity: 0;
+            transition: opacity 1s ease;
         }
+
         .form-container {
-            display: none;
+            display: none; /* Initially hide the form */
             background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            width: 300px;
+            margin-top: 20px;
+            width: 300px; /* Fixed width for consistency */
         }
+
         .input-field {
             margin: 10px 0;
             padding: 10px;
             border: 2px solid #ccc;
             border-radius: 5px;
-            width: 100%;
+            width: 100%; /* Full width of the form */
             font-size: 16px;
+            transition: border-color 0.3s;
         }
+
+        .input-field:focus {
+            border-color: #6a82fb; /* Change to gradient color on focus */
+        }
+
         .submit-btn {
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
             border: none;
@@ -54,21 +70,16 @@
             padding: 15px 30px;
             color: #fff;
             font-size: 18px;
+            margin: 10px 0;
             cursor: pointer;
-            width: 100%;
             transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%; /* Full width of the form */
         }
+
         .submit-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
                         0 0 30px rgba(252, 92, 125, 0.9);
-        }
-        .login-link {
-            margin-top: 10px;
-        }
-        .login-link a {
-            color: #6a82fb;
-            text-decoration: none;
         }
     </style>
 </head>
@@ -83,15 +94,13 @@
         <input type="email" id="email" class="input-field" placeholder="Email" required>
         <input type="password" id="password" class="input-field" placeholder="Password" required>
         <button id="signupBtn" class="submit-btn">Sign Up</button>
-        <div class="login-link">
-            Already have an account? <a href="login.html">Login</a>
-        </div>
     </div>
 
     <script type="module">
-        import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 
+        // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
             authDomain: "smartbook-2215.firebaseapp.com",
@@ -101,31 +110,36 @@
             appId: "1:999113949935:web:97d7d78e7ccf3f1b68911a"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
+        // Show "Touch To Start" after Welcome
         window.onload = () => {
             const fadeInText = document.getElementById('fadeIn');
             fadeInText.style.display = 'block';
             setTimeout(() => {
-                fadeInText.style.opacity = '1';
-            }, 2000);
+                fadeInText.style.opacity = '1'; // Fade in "Touch To Start"
+            }, 2000); // Show after 2 seconds
         };
 
+        // Handle click event on the body to show the form
         document.body.addEventListener('click', () => {
-            document.getElementById('formContainer').style.display = 'block';
-            document.getElementById('fadeIn').style.display = 'none';
+            document.getElementById('formContainer').style.display = 'block'; // Show the form
+            document.getElementById('fadeIn').style.display = 'none'; // Hide the "Touch To Start" text
         });
 
+        // Sign up user
         document.getElementById('signupBtn').addEventListener('click', async () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const username = document.getElementById('username').value;
 
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(userCredential.user, { displayName: username });
-
+                // Signed in
+                const user = userCredential.user;
+                console.log('User signed up:', user);
+                // Redirect to index.html
                 window.location.href = 'index.html';
             } catch (error) {
                 console.error('Error signing up:', error.message);
