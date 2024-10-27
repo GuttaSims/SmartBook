@@ -14,50 +14,56 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            flex-direction: column;
         }
 
-        h1 {
-            font-size: 48px;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .modules {
+        .container {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            width: 300px;
+            grid-template-columns: repeat(2, 1fr); /* 2x2 grid layout */
+            gap: 20px;
         }
 
-        a {
+        .button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 150px;
+            height: 150px;
+            border-radius: 15px;
             text-decoration: none;
-            font-size: 20px;
-            color: #fff;
-            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            transition: background-color 0.3s;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        a:hover {
-            background-color: #fc5c7d;
+        .button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .back-btn {
-            margin-top: 20px;
-            background-color: #333;
+        .creating {
+            background: linear-gradient(145deg, #ff9a9e, #fad0c4); /* Soft pink gradient */
+        }
+
+        .blogging {
+            background: linear-gradient(145deg, #ffecd2, #fcb69f); /* Peach gradient */
+        }
+
+        .rp {
+            background: linear-gradient(145deg, #a18cd1, #fbc2eb); /* Purple gradient */
+        }
+
+        .back {
+            background: linear-gradient(145deg, #a1c4fd, #c2e9fb); /* Light blue gradient */
         }
     </style>
 </head>
 <body>
-    <h1>Learning Library</h1>
-    <div class="modules">
-        <a href="Creating.html">Becoming a Creator on SL</a>
-        <a href="Blogging.html">Blogging for SL Brands</a>
-        <a href="RP.html">Roleplaying on SL</a>
+    <div class="container">
+        <a href="Creating.html" class="button creating">Creating on SL</a>
+        <a href="Blogging.html" class="button blogging">Blogging for SL</a>
+        <a href="RP.html" class="button rp">Roleplaying on SL</a>
+        <a href="index.html" class="button back">Back to Home</a>
     </div>
-    <a href="index.html" class="back-btn">Back to Home</a>
 </body>
 </html>
