@@ -3,145 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="style.css">
+    <title>SmartBook Home</title>
     <style>
-        /* Same styles as before */
         body {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
             text-align: center;
-            overflow: hidden;
-            cursor: pointer;
         }
-        h1, #fadeIn {
-            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: opacity 1s ease;
-        }
-        #fadeIn {
-            display: none;
-            font-size: 24px;
-            margin-top: 20px;
-            opacity: 0;
-        }
-        .form-container {
-            display: none;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            width: 300px;
-        }
-        .input-field {
-            margin: 10px 0;
-            padding: 10px;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            width: 100%;
-            font-size: 16px;
-        }
-        .submit-btn {
+
+        .button {
+            width: 200px;
+            height: 200px;
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
             border: none;
-            border-radius: 10px;
-            padding: 15px 30px;
+            border-radius: 20px;
             color: #fff;
             font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            width: 100%;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(106, 130, 251, 0.5), 
+                        0 0 25px rgba(252, 92, 125, 0.7);
         }
-        .submit-btn:hover {
-            transform: translateY(-3px);
+
+        .button:hover {
+            transform: translateY(-5px);
             box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
                         0 0 30px rgba(252, 92, 125, 0.9);
         }
-        .login-link {
-            margin-top: 10px;
+
+        .logout {
+            margin-top: 20px;
+            background: linear-gradient(145deg, #ff9966, #ff5e62);
         }
-        .login-link a {
-            color: #6a82fb;
-            text-decoration: none;
+
+        .welcome {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome!</h1>
-    <div id="fadeIn">Touch To Start</div>
+    <div class="welcome">Hello, <span id="username">Loading...</span>!</div>
 
-    <div class="form-container" id="formContainer">
-        <input type="text" id="firstName" class="input-field" placeholder="First Name" required>
-        <input type="text" id="lastName" class="input-field" placeholder="Last Name" required>
-        <input type="text" id="username" class="input-field" placeholder="Username" required>
-        <input type="email" id="email" class="input-field" placeholder="Email" required>
-        <input type="password" id="password" class="input-field" placeholder="Password" required>
-        <button id="signupBtn" class="submit-btn">Sign Up</button>
-        <div class="login-link">
-            Already have an account? <a href="login.html">Login</a>
-        </div>
+    <div class="container">
+        <button class="button">Learning Library</button>
+        <button class="button">Learning Progress</button>
+        <button class="button">Account Info</button>
+        <button class="button">Help</button>
     </div>
 
+    <button class="button logout" id="logout">Logout</button>
+
     <script type="module">
-        import { getAuth, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+        // Firebase imports
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
-            authDomain: "smartbook-2215.firebaseapp.com",
-            projectId: "smartbook-2215",
-            storageBucket: "smartbook-2215.appspot.com",
-            messagingSenderId: "999113949935",
-            appId: "1:999113949935:web:97d7d78e7ccf3f1b68911a"
-        };
+        const auth = getAuth();
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Check if user is already logged in
+        // Track user state and display username
         onAuthStateChanged(auth, (user) => {
+            const usernameElement = document.getElementById('username');
             if (user) {
-                // User is signed in, redirect to index page
-                window.location.href = 'index.html'; // Redirect to index.html
+                const { displayName, email } = user;
+                usernameElement.textContent = displayName || email.split('@')[0];
             } else {
-                // User is not signed in, show the sign-up form
-                document.getElementById('formContainer').style.display = 'block';
+                window.location.href = 'signup.html'; // Redirect to sign-up if not logged in
             }
         });
 
-        window.onload = () => {
-            const fadeInText = document.getElementById('fadeIn');
-            fadeInText.style.display = 'block';
-            setTimeout(() => {
-                fadeInText.style.opacity = '1';
-            }, 2000);
-        };
-
-        document.body.addEventListener('click', () => {
-            document.getElementById('formContainer').style.display = 'block';
-            document.getElementById('fadeIn').style.display = 'none';
-        });
-
-        document.getElementById('signupBtn').addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const username = document.getElementById('username').value;
-
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(userCredential.user, { displayName: username });
-
-                window.location.href = 'index.html'; // Redirect to index.html
-            } catch (error) {
-                console.error('Error signing up:', error.message);
-                alert(error.message);
-            }
+        // Logout functionality
+        const logoutButton = document.getElementById('logout');
+        logoutButton.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.location.href = 'signup.html'; // Redirect to sign-up on logout
+            }).catch((error) => {
+                console.error('Logout error:', error);
+            });
         });
     </script>
 </body>
