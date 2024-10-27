@@ -9,25 +9,27 @@
         body {
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
+            height: 100vh;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
-            padding: 20px;
-            overflow: auto; /* Allows scrolling */
+            text-align: center;
+            overflow: hidden;
+            cursor: pointer;
         }
         h1 {
-            color: #333;
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .container {
             background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 400px;
-            margin: 10px 0; /* Space between containers */
+            width: 300px;
+            margin-bottom: 20px;
         }
         .input-field {
             margin: 10px 0;
@@ -36,108 +38,95 @@
             border-radius: 5px;
             width: 100%;
             font-size: 16px;
-            box-sizing: border-box; /* Ensures padding is included in width */
+            transition: border 0.3s;
         }
         .input-field.error {
-            border-color: red;
+            border: 2px solid red;
+            box-shadow: 0 0 5px red;
         }
         .submit-btn, .delete-btn, .back-btn {
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
             border: none;
             border-radius: 10px;
-            padding: 15px 30px;
+            padding: 10px 20px;
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             width: 100%;
-            margin-top: 10px;
             transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
         }
         .submit-btn:hover, .delete-btn:hover, .back-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 0 0 30px rgba(252, 92, 125, 0.9);
+            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
+                        0 0 30px rgba(252, 92, 125, 0.9);
         }
-        #confirmationPopup {
+        .popup {
             display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-        }
-        #blur {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 999;
+            justify-content: center;
+            align-items: center;
         }
-        .success-message, .error-message {
-            color: green;
-            display: none;
-            font-size: 14px;
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
-        .error-message {
-            color: red;
+        .popup-content button {
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Account Information</h1>
-    <div class="container">
-        <div id="userInfo">
-            <p><strong>First Name:</strong> <span id="firstName">John</span></p>
-            <p><strong>Last Name:</strong> <span id="lastName">Doe</span></p>
-            <p><strong>Username:</strong> <span id="usernameDisplay">johndoe</span></p>
-            <p><strong>Email:</strong> <span id="emailDisplay">johndoe@example.com</span></p>
-        </div>
-        <button class="submit-btn" id="deleteAccount">Delete Account</button>
-        <button class="back-btn" id="backToHome">Back to Home</button>
-    </div>
-
+    <h1>Account Info</h1>
+    
     <div class="container">
         <h2>Update Info</h2>
-        <input type="text" id="username" class="input-field" placeholder="New Username">
-        <input type="email" id="email" class="input-field" placeholder="New Email">
-        <div class="success-message" id="updateSuccess">Update Complete</div>
-        <div class="error-message" id="updateError">At least one field is required.</div>
-        <button class="submit-btn" id="updateInfo">Update Info</button>
+        <div>
+            <span>First Name: <strong id="firstNameDisplay"></strong></span><br>
+            <span>Last Name: <strong id="lastNameDisplay"></strong></span><br>
+            <input type="text" id="usernameInput" class="input-field" placeholder="New Username">
+            <input type="email" id="emailInput" class="input-field" placeholder="New Email">
+            <button id="updateInfoBtn" class="submit-btn">Update Info</button>
+            <div id="updateMessage" style="color: green; display: none;">Update Complete</div>
+        </div>
     </div>
 
     <div class="container">
         <h2>Change Password</h2>
         <input type="password" id="currentPassword" class="input-field" placeholder="Current Password">
         <input type="password" id="newPassword" class="input-field" placeholder="New Password">
-        <input type="password" id="confirmNewPassword" class="input-field" placeholder="Confirm New Password">
-        <div class="success-message" id="changeSuccess">Password Changed Successfully</div>
-        <div class="error-message" id="changeError">All fields are required.</div>
-        <button class="submit-btn" id="changePassword">Change Password</button>
+        <input type="password" id="confirmPassword" class="input-field" placeholder="Confirm New Password">
+        <button id="changePasswordBtn" class="submit-btn">Change Password</button>
+        <div id="passwordMessage" style="color: green; display: none;">Password Changed</div>
     </div>
 
-    <div id="blur"></div>
-    <div id="confirmationPopup">
-        <p>Are you sure you want to delete your account?</p>
-        <button class="delete-btn" id="confirmDelete">Yes</button>
-        <button class="delete-btn" id="cancelDelete">No, Cancel</button>
+    <button id="deleteAccountBtn" class="delete-btn">Delete Account</button>
+    <button id="backToHomeBtn" class="back-btn">Back To Home</button>
+
+    <div class="popup" id="deletePopup">
+        <div class="popup-content">
+            <p>Are you sure you want to delete your account?</p>
+            <button id="confirmDeleteBtn" class="delete-btn">Yes</button>
+            <button id="cancelDeleteBtn" class="back-btn">No, Cancel</button>
+        </div>
     </div>
 
     <script type="module">
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getDatabase, ref, set, remove, onValue } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged, reauthenticateWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
             authDomain: "smartbook-2215.firebaseapp.com",
-            databaseURL: "https://smartbook-2215-default-rtdb.firebaseio.com/",
             projectId: "smartbook-2215",
             storageBucket: "smartbook-2215.appspot.com",
             messagingSenderId: "999113949935",
@@ -148,116 +137,99 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
 
-        const userId = auth.currentUser.uid; // Get the current user's ID
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userId = user.uid;
+                const userRef = ref(db, 'users/' + userId);
 
-        // Load user data from the database
-        onValue(ref(db, 'users/' + userId), (snapshot) => {
-            if (snapshot.exists()) {
-                const userData = snapshot.val();
-                document.getElementById('firstName').innerText = userData.firstName;
-                document.getElementById('lastName').innerText = userData.lastName;
-                document.getElementById('usernameDisplay').innerText = userData.username;
-                document.getElementById('emailDisplay').innerText = userData.email;
-            }
-        });
-
-        // Delete Account
-        document.getElementById('deleteAccount').addEventListener('click', () => {
-            document.getElementById('confirmationPopup').style.display = 'block';
-            document.getElementById('blur').style.display = 'block';
-        });
-
-        document.getElementById('confirmDelete').addEventListener('click', () => {
-            // Code to delete user from database
-            set(ref(db, 'users/' + userId), null).then(() => {
-                // Optionally delete from authentication as well
-                auth.currentUser.delete().then(() => {
-                    window.location.href = "signup.html"; // Redirect to signup page
-                }).catch((error) => {
-                    console.error("Error deleting account:", error);
+                onValue(userRef, (snapshot) => {
+                    const data = snapshot.val();
+                    document.getElementById('firstNameDisplay').innerText = data.firstName;
+                    document.getElementById('lastNameDisplay').innerText = data.lastName;
+                    // Pre-fill the username and email inputs
+                    document.getElementById('usernameInput').value = data.username || '';
+                    document.getElementById('emailInput').value = data.email || '';
                 });
-            });
-        });
-
-        document.getElementById('cancelDelete').addEventListener('click', () => {
-            document.getElementById('confirmationPopup').style.display = 'none';
-            document.getElementById('blur').style.display = 'none';
-        });
-
-        // Update Info
-        document.getElementById('updateInfo').addEventListener('click', () => {
-            const username = document.getElementById('username').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const updateSuccess = document.getElementById('updateSuccess');
-            const updateError = document.getElementById('updateError');
-            updateError.style.display = "none";
-            updateSuccess.style.display = "none";
-
-            // Validate that at least one field is filled
-            if (!username && !email) {
-                updateError.style.display = "block";
-                return;
             } else {
-                document.getElementById('username').classList.remove('error');
-                document.getElementById('email').classList.remove('error');
+                window.location.href = 'signup.html';
             }
-
-            // Update user info in database if fields are filled
-            const userUpdates = {};
-            if (username) userUpdates.username = username;
-            if (email) userUpdates.email = email;
-
-            // Only update if there's data to change
-            set(ref(db, 'users/' + userId), {
-                ...userUpdates,
-                firstName: document.getElementById('firstName').innerText,
-                lastName: document.getElementById('lastName').innerText
-            }).then(() => {
-                updateSuccess.style.display = "block";
-                setTimeout(() => {
-                    window.location.href = "index.html"; // Redirect to home page
-                }, 2000);
-            }).catch((error) => {
-                console.error("Error updating user data:", error);
-                updateError.innerText = "Update Failed. Please try again.";
-                updateError.style.display = "block";
-            });
         });
 
-        // Change Password
-        document.getElementById('changePassword').addEventListener('click', () => {
-            const currentPassword = document.getElementById('currentPassword').value.trim();
-            const newPassword = document.getElementById('newPassword').value.trim();
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
-            const changeSuccess = document.getElementById('changeSuccess');
-            const changeError = document.getElementById('changeError');
-            changeError.style.display = "none";
-            changeSuccess.style.display = "none";
+        document.getElementById('updateInfoBtn').addEventListener('click', async () => {
+            const username = document.getElementById('usernameInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
+            const userId = auth.currentUser.uid;
 
-            // Validate fields
-            if (!currentPassword || !newPassword || !confirmNewPassword) {
-                changeError.innerText = "All fields are required.";
-                changeError.style.display = "block";
-                return;
+            let valid = true;
+            // Check if at least one field is filled
+            if (username === '' && email === '') {
+                alert('Field Required');
+                valid = false;
             }
 
-            if (newPassword !== confirmNewPassword) {
-                changeError.innerText = "New passwords do not match.";
-                changeError.style.display = "block";
-                return;
-            }
-
-            // Update password logic
-            auth.currentUser.updatePassword(newPassword).then(() => {
-                changeSuccess.style.display = "block";
+            // Update the database if valid
+            if (valid) {
+                await set(ref(db, 'users/' + userId), {
+                    username: username || null,
+                    email: email || null,
+                });
+                document.getElementById('updateMessage').style.display = 'block';
                 setTimeout(() => {
-                    window.location.href = "index.html"; // Redirect to home page
+                    document.getElementById('updateMessage').style.display = 'none';
+                    window.location.href = 'index.html';
                 }, 2000);
-            }).catch((error) => {
-                console.error("Error changing password:", error);
-                changeError.innerText = "Failed to change password. Please try again.";
-                changeError.style.display = "block";
-            });
+            }
+        });
+
+        document.getElementById('changePasswordBtn').addEventListener('click', async () => {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const user = auth.currentUser;
+
+            if (currentPassword === '' || newPassword === '' || confirmPassword === '') {
+                alert('Field Required');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            try {
+                const credential = EmailAuthProvider.credential(user.email, currentPassword);
+                await reauthenticateWithCredential(user, credential);
+                await user.updatePassword(newPassword);
+                document.getElementById('passwordMessage').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('passwordMessage').style.display = 'none';
+                    window.location.href = 'index.html';
+                }, 2000);
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+            document.getElementById('deletePopup').style.display = 'flex';
+        });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+            const userId = auth.currentUser
+
+.uid;
+            await remove(ref(db, 'users/' + userId));
+            await auth.currentUser.delete();
+            window.location.href = 'signup.html';
+        });
+
+        document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+            document.getElementById('deletePopup').style.display = 'none';
+        });
+
+        document.getElementById('backToHomeBtn').addEventListener('click', () => {
+            window.location.href = 'index.html';
         });
     </script>
 </body>
