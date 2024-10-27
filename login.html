@@ -70,17 +70,11 @@
         }
         .forgot-password {
             margin-top: 10px;
-            font-size: 12px;
-            color: #6a82fb;
+            font-size: 12px; /* Adjusted font size */
         }
         .remember-me {
-            display: flex;
-            align-items: center;
             margin: 10px 0;
-            font-size: 14px;
-        }
-        .remember-me input {
-            margin-right: 5px;
+            font-size: 12px; /* Adjusted font size */
         }
     </style>
 </head>
@@ -89,16 +83,13 @@
         <input type="text" id="username" class="input-field" placeholder="Username" required>
         <input type="password" id="password" class="input-field" placeholder="Password" required>
         <div class="remember-me">
-            <input type="checkbox" id="rememberMe">
-            <label for="rememberMe">Remember Me</label>
+            <input type="checkbox" id="rememberMe"> Remember Me
         </div>
         <button id="loginBtn" class="submit-btn">Login</button>
-        
+
+        <div class="forgot-password"><a href="forgot-password.html">Forgot Password?</a></div>
         <div class="login-link">
             Don’t have an account? <a href="signup.html">Sign up here</a>.
-        </div>
-        <div class="forgot-password">
-            <a href="forgot-password.html">Forgot Password?</a>
         </div>
         <div class="login-link">
             Other Sign-In Options: <a href="altlogin.html">Email</a>
@@ -121,7 +112,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Check if the user is already logged in
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 window.location.href = 'index.html';
@@ -133,7 +123,7 @@
             const password = document.getElementById('password').value;
 
             try {
-                const email = `${username}@example.com`;
+                const email = `${username}@example.com`; // Treat username as email
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 window.location.href = 'index.html';
             } catch (error) {
