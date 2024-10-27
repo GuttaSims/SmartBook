@@ -16,58 +16,53 @@
             font-family: Arial, sans-serif;
             text-align: center;
         }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            width: 300px;
-        }
-        .input-field {
-            margin: 10px 0;
-            padding: 10px;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            width: 100%;
-            font-size: 16px;
-        }
-        .submit-btn {
+
+        .button {
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
             border: none;
             border-radius: 10px;
             padding: 15px 30px;
             color: #fff;
+            text-align: center;
+            text-decoration: none;
             font-size: 18px;
-            cursor: pointer;
-            width: 100%;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(106, 130, 251, 0.5), 
+                        0 0 25px rgba(252, 92, 125, 0.7);
             transition: transform 0.3s, box-shadow 0.3s;
         }
-        .submit-btn:hover {
+
+        .button:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
                         0 0 30px rgba(252, 92, 125, 0.9);
         }
+
+        .logout-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #fc5c7d, #6a82fb);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Account Info</h2>
-        <div>
-            <strong>First Name:</strong> <span id="firstNameDisplay"></span><br>
-            <strong>Last Name:</strong> <span id="lastNameDisplay"></span><br>
-        </div>
-        <input type="text" id="username" class="input-field" placeholder="Username" required>
-        <input type="email" id="email" class="input-field" placeholder="Email" required>
-        <input type="password" id="newPassword" class="input-field" placeholder="New Password (optional)">
-        <button id="updateBtn" class="submit-btn">Update Info</button>
-    </div>
+    <h1>Account Info</h1>
+    <div id="accountInfo"></div>
+
+    <a href="index.html" class="button">Back to Home</a>
+    <button class="logout-btn" id="logoutBtn" style="display: none;">Logout</button>
 
     <script type="module">
-        import { getAuth, onAuthStateChanged, updateProfile, updateEmail, updatePassword } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVkoc",
+            apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
             authDomain: "smartbook-2215.firebaseapp.com",
             projectId: "smartbook-2215",
             storageBucket: "smartbook-2215.appspot.com",
@@ -78,49 +73,27 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
+        // Check if the user is logged in
         onAuthStateChanged(auth, (user) => {
+            const accountInfoDiv = document.getElementById('accountInfo');
+            const logoutButton = document.getElementById('logoutBtn');
+
             if (user) {
-                // Display first name and last name
-                const [firstName, lastName] = user.displayName.split(" ");
-                document.getElementById('firstNameDisplay').innerText = firstName;
-                document.getElementById('lastNameDisplay').innerText = lastName;
-
-                // Populate current username and email
-                document.getElementById('username').value = user.displayName; // Assuming displayName is used as username
-                document.getElementById('email').value = user.email;
-
-                // Update information
-                document.getElementById('updateBtn').addEventListener('click', async () => {
-                    const newUsername = document.getElementById('username').value;
-                    const newEmail = document.getElementById('email').value;
-                    const newPassword = document.getElementById('newPassword').value;
-
-                    try {
-                        // Update username
-                        if (newUsername !== user.displayName) {
-                            await updateProfile(user, { displayName: newUsername });
-                        }
-
-                        // Update email if changed
-                        if (newEmail !== user.email) {
-                            await updateEmail(user, newEmail);
-                        }
-
-                        // Update password if provided
-                        if (newPassword) {
-                            await updatePassword(user, newPassword);
-                        }
-
-                        alert("Information updated successfully!");
-                    } catch (error) {
-                        console.error('Error updating information:', error.message);
-                        alert(error.message);
-                    }
-                });
+                accountInfoDiv.innerHTML = `<p>Email: ${user.email}</p>`;
+                logoutButton.style.display = 'block';
             } else {
-                // User is not signed in, redirect to sign up or login page
-                window.location.href = 'sign-up.html'; // Adjust to your login/signup page
+                // Redirect to signup page if not logged in
+                window.location.href = "signup.html";
             }
+        });
+
+        // Logout function
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.location.href = "signup.html";
+            }).catch((error) => {
+                alert(error.message);
+            });
         });
     </script>
 </body>
