@@ -17,34 +17,49 @@
 
         .container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 columns layout */
+            grid-template-columns: repeat(2, 1fr); /* 2 columns */
             gap: 20px; /* Space between buttons */
-            text-align: center;
         }
 
         .button {
-            background: linear-gradient(145deg, #6a82fb, #fc5c7d); /* Gradient background */
-            border: none; /* No border for a cleaner look */
-            border-radius: 15px; /* Rounded corners */
-            color: #fff; /* White text color */
+            border: none;
+            border-radius: 15px;
+            color: #fff;
             text-align: center;
             text-decoration: none;
             font-size: 24px;
             font-weight: bold;
-            width: 200px;
-            height: 200px; /* Square shape */
+            width: 220px;
+            height: 220px; /* Square shape */
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(106, 130, 251, 0.5), 
-                        0 0 25px rgba(252, 92, 125, 0.7); /* Glow effect */
-            transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 
+                        0 0 25px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        /* Different gradient backgrounds for each button */
+        .button:nth-child(1) {
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+        }
+
+        .button:nth-child(2) {
+            background: linear-gradient(145deg, #36d1dc, #5b86e5);
+        }
+
+        .button:nth-child(3) {
+            background: linear-gradient(145deg, #f093fb, #f5576c);
+        }
+
+        .button:nth-child(4) {
+            background: linear-gradient(145deg, #43e97b, #38f9d7);
         }
 
         .button:hover {
             transform: translateY(-5px); /* Lift effect on hover */
-            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
-                        0 0 35px rgba(252, 92, 125, 0.9); /* Enhanced glow on hover */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 
+                        0 0 35px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
         }
     </style>
 </head>
