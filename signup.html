@@ -119,6 +119,7 @@
 
             // Automatically show the signup header and form after clicking "Touch to Start"
             touchStart.onclick = function() {
+                touchStart.style.display = 'none'; // Hide "Touch to Start"
                 const signupHeader = document.getElementById('signupHeader');
                 signupHeader.style.display = 'block'; // Show the header
                 signupHeader.classList.add('fade-in'); // Fade in the header
