@@ -9,68 +9,65 @@
         body {
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
+            text-align: center;
         }
-
         .container {
-            width: 300px;
+            background-color: white;
             padding: 20px;
             border-radius: 10px;
-            background-color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 300px;
         }
-
-        input, button {
-            width: 100%;
-            margin-top: 10px;
+        .input-field {
+            margin: 10px 0;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 2px solid #ccc;
             border-radius: 5px;
+            width: 100%;
+            font-size: 16px;
         }
-
-        button {
+        .submit-btn {
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
-            color: white;
             border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            color: #fff;
+            font-size: 18px;
             cursor: pointer;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-            transition: 0.3s;
-        }
-
-        .back-btn {
+            width: 100%;
             margin-top: 10px;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h2>Account Information</h2>
-        <p id="firstName"></p>
-        <p id="lastName"></p>
-
-        <input type="email" id="email" placeholder="Email">
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="newPassword" placeholder="New Password (Optional)">
-
-        <button id="updateBtn">Update Info</button>
-        <button class="back-btn" onclick="window.location.href='index.html'">Back to Home</button>
+        <h1>Account Info</h1>
+        <div>
+            <p><strong>First Name:</strong> <span id="firstNameDisplay"></span></p>
+            <p><strong>Last Name:</strong> <span id="lastNameDisplay"></span></p>
+            <p><strong>Username:</strong> <input type="text" id="username" class="input-field" placeholder="Username"></p>
+            <p><strong>Email:</strong> <input type="email" id="email" class="input-field" placeholder="Email"></p>
+        </div>
+        
+        <button id="updateInfo" class="submit-btn">Update Info</button>
+        
+        <h2>Change Password</h2>
+        <input type="password" id="currentPassword" class="input-field" placeholder="Current Password">
+        <input type="password" id="newPassword" class="input-field" placeholder="New Password">
+        <input type="password" id="confirmPassword" class="input-field" placeholder="Confirm New Password">
+        
+        <button id="changePassword" class="submit-btn">Change Password</button>
     </div>
 
     <script type="module">
-        // Firebase SDK Imports
         import { getAuth, updateEmail, updatePassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 
-        // Your Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
             authDomain: "smartbook-2215.firebaseapp.com",
@@ -80,68 +77,72 @@
             appId: "1:999113949935:web:97d7d78e7ccf3f1b68911a"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
 
-        // Elements
-        const firstNameElem = document.getElementById('firstName');
-        const lastNameElem = document.getElementById('lastName');
-        const emailInput = document.getElementById('email');
-        const usernameInput = document.getElementById('username');
-        const newPasswordInput = document.getElementById('newPassword');
-        const updateBtn = document.getElementById('updateBtn');
-
-        // Check for Logged-in User and Fetch Data
-        onAuthStateChanged(auth, async (user) => {
+        // Display user's account info
+        onAuthStateChanged(auth, (user) => {
             if (user) {
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
+                const firstName = user.displayName.split(' ')[0]; // Assuming displayName is in 'First Last' format
+                const lastName = user.displayName.split(' ')[1]; // Assuming displayName is in 'First Last' format
+                const username = "user's username"; // Fetch the username from your database
+                const email = user.email;
 
-                if (userDoc.exists()) {
-                    const data = userDoc.data();
-                    firstNameElem.textContent = `First Name: ${data.firstName}`;
-                    lastNameElem.textContent = `Last Name: ${data.lastName}`;
-                    emailInput.value = user.email;
-                    usernameInput.value = data.username;
-                }
+                document.getElementById('firstNameDisplay').textContent = firstName;
+                document.getElementById('lastNameDisplay').textContent = lastName;
+                document.getElementById('username').value = username;
+                document.getElementById('email').value = email;
             } else {
-                alert("You are not logged in. Redirecting to signup.");
-                window.location.href = "signup.html";
+                // User is signed out, redirect to login page
+                window.location.href = 'login.html';
             }
         });
 
-        // Update User Info Function
-        updateBtn.addEventListener('click', async () => {
-            const user = auth.currentUser;
-            const newEmail = emailInput.value;
-            const newUsername = usernameInput.value;
-            const newPassword = newPasswordInput.value;
+        // Update user information
+        document.getElementById('updateInfo').addEventListener('click', async () => {
+            const newEmail = document.getElementById('email').value;
+            const newUsername = document.getElementById('username').value; // This should also be updated in your database
 
             try {
-                // Update email if changed
-                if (newEmail && newEmail !== user.email) {
+                const user = auth.currentUser;
+                if (user) {
                     await updateEmail(user, newEmail);
+                    // Update username in your database here
+                    alert("User info updated successfully!");
                 }
-
-                // Update password if provided
-                if (newPassword) {
-                    await updatePassword(user, newPassword);
-                }
-
-                // Update Firestore username
-                const userDocRef = doc(db, "users", user.uid);
-                await updateDoc(userDocRef, {
-                    username: newUsername
-                });
-
-                alert("Account information updated successfully.");
             } catch (error) {
-                alert(`Error updating information: ${error.message}`);
+                console.error('Error updating email:', error.message);
+                alert(error.message);
+            }
+        });
+
+        // Change user password
+        document.getElementById('changePassword').addEventListener('click', async () => {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert("New password and confirmation do not match!");
+                return;
+            }
+
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    // Re-authenticate user
+                    const credential = EmailAuthProvider.credential(user.email, currentPassword);
+                    await reauthenticateWithCredential(user, credential);
+
+                    // Update password
+                    await updatePassword(user, newPassword);
+                    alert("Password changed successfully!");
+                }
+            } catch (error) {
+                console.error('Error changing password:', error.message);
+                alert(error.message);
             }
         });
     </script>
-
 </body>
 </html>
