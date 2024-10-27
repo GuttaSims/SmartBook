@@ -99,7 +99,7 @@
     </style>
 </head>
 <body>
-    <h1>Welcome</h1>
+    <h1 id="welcomeText">Welcome</h1>
     <div id="fadeIn">Touch To Start</div>
 
     <div class="form-container" id="formContainer">
@@ -131,11 +131,20 @@
         const auth = getAuth(app);
 
         window.onload = () => {
+            const welcomeText = document.getElementById('welcomeText');
             const fadeInText = document.getElementById('fadeIn');
-            fadeInText.style.display = 'block';
+
+            // Fade in the Welcome text
             setTimeout(() => {
-                fadeInText.style.opacity = '1';
-            }, 2000);
+                welcomeText.style.opacity = '1';
+                // After Welcome fades in, show "Touch To Start"
+                setTimeout(() => {
+                    fadeInText.style.display = 'block';
+                    setTimeout(() => {
+                        fadeInText.style.opacity = '1';
+                    }, 500); // Delay for fade-in effect
+                }, 1000); // Delay for the "Welcome" to stay on screen
+            }, 500); // Initial delay before "Welcome" fades in
         };
 
         document.body.addEventListener('click', () => {
