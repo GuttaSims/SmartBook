@@ -89,7 +89,7 @@
     </div>
 
     <script type="module">
-        import { getAuth, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 
         const firebaseConfig = {
@@ -103,17 +103,6 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-
-        // Check if user is already logged in
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is signed in, redirect to index page
-                window.location.href = 'index.html'; // Redirect to index.html
-            } else {
-                // User is not signed in, show the sign-up form
-                document.getElementById('formContainer').style.display = 'block';
-            }
-        });
 
         window.onload = () => {
             const fadeInText = document.getElementById('fadeIn');
@@ -137,7 +126,7 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(userCredential.user, { displayName: username });
 
-                window.location.href = 'index.html'; // Redirect to index.html
+                window.location.href = 'index.html';
             } catch (error) {
                 console.error('Error signing up:', error.message);
                 alert(error.message);
