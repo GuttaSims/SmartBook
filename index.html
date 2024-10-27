@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiny Button Example</title>
+    <title>Glowing Gradient Button Example</title>
     <style>
         body {
             display: flex;
@@ -19,24 +19,23 @@
         }
 
         .button {
-            background: linear-gradient(145deg, #ffffff, #e6e6e6); /* Light gradient */
-            border: 1px solid #ccc; /* Light border */
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d); /* Gradient background */
+            border: none; /* No border for a cleaner look */
             border-radius: 10px; /* Rounded corners */
             padding: 10px 20px;
-            color: #333; /* Dark text color */
+            color: #fff; /* White text color */
             text-align: center;
             text-decoration: none;
             font-size: 16px;
-            box-shadow: 5px 5px 10px #b0b0b0, 
-                        -5px -5px 10px #ffffff; /* Soft shadows for 3D effect */
-            transition: transform 0.3s, box-shadow 0.3s, background 0.3s; /* Smooth transitions */
+            box-shadow: 0 4px 15px rgba(106, 130, 251, 0.5), 
+                        0 0 25px rgba(252, 92, 125, 0.7); /* Glow effect */
+            transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
         }
 
         .button:hover {
             transform: translateY(-3px); /* Lift effect on hover */
-            box-shadow: 3px 3px 8px #b0b0b0, 
-                        -3px -3px 8px #ffffff; /* Slightly reduced shadow on hover */
-            background: linear-gradient(145deg, #e6e6e6, #ffffff); /* Reverse gradient on hover */
+            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
+                        0 0 30px rgba(252, 92, 125, 0.9); /* Enhanced glow on hover */
         }
     </style>
 </head>
