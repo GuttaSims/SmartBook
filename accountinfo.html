@@ -10,12 +10,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Changed to flex-start for better alignment */
-            min-height: 100vh; /* Ensures body takes full height */
+            justify-content: flex-start;
+            min-height: 100vh;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
-            overflow: auto; /* Allows for scrolling if necessary */
-            padding: 20px; /* Added padding for spacing */
+            padding: 20px;
+            overflow: auto; /* Allows scrolling */
         }
         h1 {
             color: #333;
@@ -186,8 +186,8 @@
 
         // Update Info
         document.getElementById('updateInfo').addEventListener('click', () => {
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
             const updateSuccess = document.getElementById('updateSuccess');
             const updateError = document.getElementById('updateError');
             updateError.style.display = "none";
@@ -226,9 +226,9 @@
 
         // Change Password
         document.getElementById('changePassword').addEventListener('click', () => {
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            const currentPassword = document.getElementById('currentPassword').value.trim();
+            const newPassword = document.getElementById('newPassword').value.trim();
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
             const changeSuccess = document.getElementById('changeSuccess');
             const changeError = document.getElementById('changeError');
             changeError.style.display = "none";
