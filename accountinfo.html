@@ -23,13 +23,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .name-display {
-            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
         .container {
             background-color: white;
             padding: 20px;
@@ -65,7 +58,7 @@
         }
         .submit-btn:hover, .delete-btn:hover, .back-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6),
+            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
                         0 0 30px rgba(252, 92, 125, 0.9);
         }
         .popup {
@@ -78,7 +71,7 @@
             background: rgba(0, 0, 0, 0.5);
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px); /* Blur effect */
         }
         .popup-content {
             background: white;
@@ -89,6 +82,17 @@
         }
         .popup-content button {
             margin-top: 10px;
+        }
+        .name-display {
+            font-size: 20px;
+            margin-bottom: 10px;
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .error-message {
+            color: red;
+            display: none;
         }
     </style>
 </head>
@@ -103,7 +107,7 @@
         <input type="email" id="emailInput" class="input-field" placeholder="New Email">
         <button id="updateInfoBtn" class="submit-btn">Update Info</button>
         <div id="updateMessage" style="color: green; display: none;">Update Complete</div>
-        <div id="updateError" style="color: red; display: none;">Field Required</div>
+        <div class="error-message" id="updateError">At least one field is required!</div>
     </div>
 
     <div class="container">
@@ -113,7 +117,7 @@
         <input type="password" id="confirmPassword" class="input-field" placeholder="Confirm New Password">
         <button id="changePasswordBtn" class="submit-btn">Change Password</button>
         <div id="passwordMessage" style="color: green; display: none;">Password Changed</div>
-        <div id="passwordError" style="color: red; display: none;">Field Required</div>
+        <div class="error-message" id="passwordError">All fields are required!</div>
     </div>
 
     <button id="deleteAccountBtn" class="delete-btn">Delete Account</button>
@@ -192,6 +196,7 @@
         });
 
         const deletePopup = document.getElementById('deletePopup');
+
         document.getElementById('deleteAccountBtn').addEventListener('click', () => {
             deletePopup.style.display = 'flex';
         });
@@ -203,6 +208,10 @@
         document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
             await auth.currentUser.delete();
             window.location.href = 'signup.html';
+        });
+
+        document.getElementById('backToHomeBtn').addEventListener('click', () => {
+            window.location.href = 'index.html';
         });
     </script>
 </body>
