@@ -7,16 +7,16 @@
     <link rel="stylesheet" href="style.css">
     <style>
         body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: auto;
+            min-height: 100vh;
             background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            transition: filter 0.3s;
+            overflow: hidden;
+            transition: filter 0.3s ease;
         }
         body.blurred {
             filter: blur(5px);
@@ -26,16 +26,42 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-size: 2rem;
+            text-align: center;
             margin-bottom: 20px;
         }
         .container {
             background-color: white;
-            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            width: 100%;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
             max-width: 400px;
-            margin-bottom: 20px;
+            margin: 15px 0;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .input-field.error {
+            border: 1px solid #ff4d4d;
+            box-shadow: 0 0 8px #ff4d4d;
+        }
+        .submit-btn, .delete-btn, .back-btn {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            color: white;
+            cursor: pointer;
+            transition: box-shadow 0.3s;
+        }
+        .submit-btn:hover, .delete-btn:hover, .back-btn:hover {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
         .popup {
             display: none;
@@ -50,11 +76,19 @@
             z-index: 1000;
         }
         .popup-content {
-            background: white;
+            background-color: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .name-display {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(145deg, #fc5c7d, #6a82fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -92,7 +126,7 @@
     </div>
 
     <script type="module">
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
+        import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 
