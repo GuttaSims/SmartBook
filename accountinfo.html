@@ -6,6 +6,7 @@
     <title>Account Info</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Same styles as before */
         body {
             display: flex;
             flex-direction: column;
@@ -15,8 +16,15 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             text-align: center;
+            overflow: hidden;
         }
-        .container {
+        h1 {
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: opacity 1s ease;
+        }
+        .form-container {
             background-color: white;
             padding: 20px;
             border-radius: 10px;
@@ -40,35 +48,80 @@
             font-size: 18px;
             cursor: pointer;
             width: 100%;
-            margin-top: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
+                        0 0 30px rgba(252, 92, 125, 0.9);
+        }
+        .gradient-btn {
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            color: white;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .gradient-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6),
+                        0 0 30px rgba(252, 92, 125, 0.9);
+        }
+        /* Popup styles */
+        .popup {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 1000; /* On top of other elements */
+            backdrop-filter: blur(5px); /* Blur effect on the background */
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Account Info</h1>
-        <div>
-            <p><strong>First Name:</strong> <span id="firstNameDisplay"></span></p>
-            <p><strong>Last Name:</strong> <span id="lastNameDisplay"></span></p>
-            <p><strong>Username:</strong> <input type="text" id="username" class="input-field" placeholder="Username"></p>
-            <p><strong>Email:</strong> <input type="email" id="email" class="input-field" placeholder="Email"></p>
+    <h1>Account Info</h1>
+    <div class="form-container">
+        <p id="userInfo"></p>
+        <input type="text" id="username" class="input-field" placeholder="Username" required>
+        <input type="email" id="email" class="input-field" placeholder="Email" required>
+        <input type="password" id="currentPassword" class="input-field" placeholder="Current Password" required>
+        <input type="password" id="newPassword" class="input-field" placeholder="New Password" required>
+        <input type="password" id="confirmNewPassword" class="input-field" placeholder="Confirm New Password" required>
+        
+        <button id="changePasswordBtn" class="submit-btn">Change Password</button>
+        
+        <!-- Delete Account Button -->
+        <button id="deleteAccountBtn" class="submit-btn">Delete Account</button>
+
+        <!-- Confirmation Popup -->
+        <div id="confirmationPopup" class="popup">
+            <div class="popup-content">
+                <p>Are you sure you want to delete your account?</p>
+                <button id="confirmDelete" class="gradient-btn">Yes</button>
+                <button id="cancelDelete" class="gradient-btn">No, Cancel</button>
+            </div>
         </div>
-        
-        <button id="updateInfo" class="submit-btn">Update Info</button>
-        
-        <h2>Change Password</h2>
-        <input type="password" id="currentPassword" class="input-field" placeholder="Current Password">
-        <input type="password" id="newPassword" class="input-field" placeholder="New Password">
-        <input type="password" id="confirmPassword" class="input-field" placeholder="Confirm New Password">
-        
-        <button id="changePassword" class="submit-btn">Change Password</button>
-        <button id="backToHome" class="submit-btn">Back To Home</button>
     </div>
 
     <script type="module">
-        import { getAuth, updateEmail, updatePassword, onAuthStateChanged, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, deleteUser } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
+        import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
@@ -81,80 +134,59 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+        const db = getDatabase(app);
 
-        // Display user's account info
+        // Check if a user is logged in and display user info
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const userDoc = doc(db, "users", user.uid); // Assuming user info is stored in 'users' collection
-                const userSnapshot = await getDoc(userDoc);
+                const userId = user.uid;
+                const userRef = ref(db, 'users/' + userId); // Assuming you store user data under "users"
+                const snapshot = await get(userRef);
                 
-                if (userSnapshot.exists()) {
-                    const userData = userSnapshot.data();
-                    document.getElementById('firstNameDisplay').textContent = userData.firstName;
-                    document.getElementById('lastNameDisplay').textContent = userData.lastName;
-                    document.getElementById('username').value = userData.username; // Ensure this field is editable
-                    document.getElementById('email').value = user.email;
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    document.getElementById('userInfo').innerText = `Welcome, ${userData.firstName} ${userData.lastName} (${userData.username})`;
+                    document.getElementById('username').value = userData.username;
+                    document.getElementById('email').value = userData.email;
+                } else {
+                    console.log("No user data found");
                 }
             } else {
-                // User is signed out, redirect to login page
-                window.location.href = 'login.html';
+                window.location.href = 'login.html'; // Redirect if not logged in
             }
         });
 
-        // Update user information
-        document.getElementById('updateInfo').addEventListener('click', async () => {
-            const newEmail = document.getElementById('email').value;
-            const newUsername = document.getElementById('username').value;
+        // Delete account confirmation logic
+        const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+        const confirmationPopup = document.getElementById('confirmationPopup');
+        const confirmDelete = document.getElementById('confirmDelete');
+        const cancelDelete = document.getElementById('cancelDelete');
 
-            try {
-                const user = auth.currentUser;
-                if (user) {
-                    await updateEmail(user, newEmail);
+        deleteAccountBtn.addEventListener('click', () => {
+            confirmationPopup.style.display = 'flex'; // Show the popup
+        });
 
-                    // Update username in Firestore
-                    const userDoc = doc(db, "users", user.uid);
-                    await updateDoc(userDoc, { username: newUsername });
+        cancelDelete.addEventListener('click', () => {
+            confirmationPopup.style.display = 'none'; // Hide the popup
+        });
 
-                    alert("User info updated successfully!");
+        confirmDelete.addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (user) {
+                try {
+                    await deleteUser(user); // Delete the user account
+                    alert("Account deleted successfully.");
+                    window.location.href = 'signup.html'; // Redirect to signup or login page
+                } catch (error) {
+                    console.error("Error deleting account:", error.message);
+                    alert("Failed to delete account: " + error.message);
                 }
-            } catch (error) {
-                console.error('Error updating email:', error.message);
-                alert(error.message);
             }
         });
 
-        // Change user password
-        document.getElementById('changePassword').addEventListener('click', async () => {
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (newPassword !== confirmPassword) {
-                alert("New password and confirmation do not match!");
-                return;
-            }
-
-            try {
-                const user = auth.currentUser;
-                if (user) {
-                    // Re-authenticate user
-                    const credential = EmailAuthProvider.credential(user.email, currentPassword);
-                    await reauthenticateWithCredential(user, credential);
-
-                    // Update password
-                    await updatePassword(user, newPassword);
-                    alert("Password changed successfully!");
-                }
-            } catch (error) {
-                console.error('Error changing password:', error.message);
-                alert(error.message);
-            }
-        });
-
-        // Back to Home button
-        document.getElementById('backToHome').addEventListener('click', () => {
-            window.location.href = 'index.html'; // Adjust the link as needed
+        // Handle password change functionality (implement as needed)
+        document.getElementById('changePasswordBtn').addEventListener('click', async () => {
+            // Implement password change logic here
         });
     </script>
 </body>
