@@ -23,6 +23,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             width: 300px;
+            margin-bottom: 20px;
         }
         .input-field {
             margin: 10px 0;
@@ -47,10 +48,11 @@
             width: 100%;
             transition: transform 0.3s, box-shadow 0.3s;
             margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(106, 130, 251, 0.6);
         }
         .submit-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.6), 
+            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.8), 
                         0 0 30px rgba(252, 92, 125, 0.9);
         }
         .success-message {
@@ -65,14 +67,27 @@
         }
         .delete-btn, .back-home-btn {
             margin-top: 10px;
-        }
-        .delete-btn, .back-home-btn {
             background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(106, 130, 251, 0.6);
+        }
+        .delete-btn:hover, .back-home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.8), 
+                        0 0 30px rgba(252, 92, 125, 0.9);
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <h2>Update Info</h2>
         <input type="text" id="firstName" class="input-field" placeholder="First Name" required>
         <input type="text" id="lastName" class="input-field" placeholder="Last Name" required>
         <input type="text" id="username" class="input-field" placeholder="Username" required>
@@ -83,7 +98,9 @@
 
         <div id="feedbackMessage" class="success-message"></div>
         <div id="errorMessage" class="error-message"></div>
-        
+    </div>
+
+    <div class="container">
         <button id="deleteAccountBtn" class="delete-btn">Delete Account</button>
         <button id="backHomeBtn" class="back-home-btn">Back to Home</button>
     </div>
