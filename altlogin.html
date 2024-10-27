@@ -135,5 +135,27 @@
             }
         });
     </script>
+    <script src="https://cdn.backendless.com/js/backendless.min.js"></script>
+<script>
+    // Initialize Backendless with your credentials
+    Backendless.initApp("CCF35FD3-A2BC-4061-AE36-E776E9D35C1D", "1D1826F3-0850-4973-9C61-5E36022B1FD0");
+
+    async function loginUser(email, password) {
+        try {
+            const user = await Backendless.UserService.login(email, password, true);
+            console.log("Login successful", user);
+            window.location.href = "index.html"; // Redirect to the home page
+        } catch (error) {
+            console.error("Login failed", error.message);
+            alert(error.message);
+        }
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        loginUser(email, password);
+    });
+</script>
 </body>
 </html>
