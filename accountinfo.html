@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Info</title>
-    <link rel="stylesheet" href="style.css">
     <script type="module">
         // Firebase configuration
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
@@ -46,8 +45,60 @@
             }
         });
     </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            width: calc(100% - 22px);
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        #confirmationPopup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        #blur {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+        }
+    </style>
 </head>
 <body>
+    <div id="blur"></div>
     <h1>Account Information</h1>
     <div>
         <p>First Name: <span id="firstName"></span></p>
@@ -69,7 +120,7 @@
     <h2>Delete Account</h2>
     <button id="deleteAccountBtn">Delete Account</button>
 
-    <div id="confirmationPopup" style="display: none;">
+    <div id="confirmationPopup">
         <p>Are you sure you want to delete your account?</p>
         <button id="confirmDeleteBtn">Yes</button>
         <button id="cancelDeleteBtn">No, Cancel</button>
@@ -126,6 +177,7 @@
 
         document.getElementById('deleteAccountBtn').addEventListener('click', () => {
             document.getElementById('confirmationPopup').style.display = 'block';
+            document.getElementById('blur').style.display = 'block';
         });
 
         document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
@@ -149,6 +201,7 @@
 
         document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
             document.getElementById('confirmationPopup').style.display = 'none';
+            document.getElementById('blur').style.display = 'none';
         });
     </script>
 </body>
