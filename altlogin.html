@@ -100,35 +100,33 @@
     </div>
 
     <script type="module">
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+        // Replace with your Backendless configuration
+        const APP_ID = 'CCF35FD3-A2BC-4061-AE36-E776E9D35C1D'; // Your Backendless application ID
+        const JS_API_KEY = '1D1826F3-0850-4973-9C61-5E36022B1FD0'; // Your Backendless JS API Key
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAdH4k_ECww3nz9g9m32GFdBVkddabBVoc",
-            authDomain: "smartbook-2215.firebaseapp.com",
-            projectId: "smartbook-2215",
-            storageBucket: "smartbook-2215.appspot.com",
-            messagingSenderId: "999113949935",
-            appId: "1:999113949935:web:97d7d78e7ccf3f1b68911a"
-        };
+        // Initialize Backendless
+        Backendless.initApp(APP_ID, JS_API_KEY);
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.location.href = 'index.html';
-            }
-        });
+        // Check if the user is already logged in
+        Backendless.User.getCurrentUser()
+            .then(user => {
+                if (user) {
+                    window.location.href = 'index.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error checking current user:', error);
+            });
 
         document.getElementById('loginBtn').addEventListener('click', async () => {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
             try {
-                const email = `${username}@example.com`; // Treat username as email
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                window.location.href = 'index.html';
+                // Log in the user
+                const user = await Backendless.User.login(username, password);
+                console.log('User logged in:', user);
+                window.location.href = 'index.html'; // Redirect on successful login
             } catch (error) {
                 console.error('Login error:', error.message);
                 alert('Invalid username or password.');
