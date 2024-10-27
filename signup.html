@@ -77,7 +77,8 @@
             font-size: 16px; /* Font size */
             cursor: pointer; /* Pointer cursor on hover */
             transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
-            animation: gradient-animation 5s linear infinite; /* Smoother animation */
+            animation: gradient-animation 8s ease infinite; /* Smooth gradient animation */
+            background-size: 400% 400%; /* Increase size for smooth transition */
         }
 
         button:hover {
@@ -90,20 +91,17 @@
             0% {
                 background: linear-gradient(145deg, #ff6a00, #ee0979);
             }
-            20% {
+            25% {
                 background: linear-gradient(145deg, #ff007f, #ff4b1f);
             }
-            40% {
+            50% {
                 background: linear-gradient(145deg, #1e3c72, #2a5298);
             }
-            60% {
-                background: linear-gradient(145deg, #ff6a00, #ee0979);
-            }
-            80% {
+            75% {
                 background: linear-gradient(145deg, #00c6ff, #0072ff);
             }
             100% {
-                background: linear-gradient(145deg, #ff007f, #ff4b1f);
+                background: linear-gradient(145deg, #ff6a00, #ee0979);
             }
         }
     </style>
