@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/backendless/6.6.2/backendless.min.js"></script>
     <style>
-        * {
-            box-sizing: border-box;
-        }
         body {
             display: flex;
             justify-content: center;
@@ -38,7 +35,7 @@
             border: none;
             border-radius: 10px;
             padding: 15px 30px;
-            color: #fff;
+            color: white;
             font-size: 18px;
             cursor: pointer;
             width: 100%;
@@ -65,45 +62,44 @@
     </div>
 
     <script type="module">
-        // Replace with your Backendless application ID and JS API key
         const APP_ID = 'CCF35FD3-A2BC-4061-AE36-E776E9D35C1D';
         const API_KEY = '1D1826F3-0850-4973-9C61-5E36022B1FD0';
 
+        // Initialize Backendless
         Backendless.initApp(APP_ID, API_KEY);
 
-        document.getElementById('signupBtn').addEventListener('click', async (event) => {
-            event.preventDefault(); // Prevent the form from refreshing the page
+        const signupButton = document.getElementById('signupBtn');
+        signupButton.addEventListener('click', async (event) => {
+            event.preventDefault(); // Stop page reload
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            // Basic client-side validation
+            // Client-side validation
             if (!email || !password || !confirmPassword) {
-                alert("All fields are required.");
+                alert('All fields are required!');
+                return;
+            }
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
                 return;
             }
 
-            if (password !== confirmPassword) {
-                alert("Passwords do not match.");
-                return;
-            }
+            const user = {
+                email: email,
+                password: password,
+            };
 
             try {
-                // Register the user in Backendless
-                const user = {
-                    email: email,
-                    password: password
-                };
+                console.log('Attempting to register user...'); // Debugging
                 const registeredUser = await Backendless.UserService.register(user);
-                console.log('User registered:', registeredUser);
+                console.log('User registered successfully:', registeredUser);
                 alert('Registration successful! You can now log in.');
-
-                // Redirect to the login page
-                window.location.href = 'login.html';
+                window.location.href = 'login.html'; // Redirect to login
             } catch (error) {
-                console.error('Registration error:', error);
-                alert('Error: ' + error.message);
+                console.error('Error during registration:', error); // Debugging
+                alert(`Registration failed: ${error.message}`);
             }
         });
     </script>
