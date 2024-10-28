@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/backendless/6.6.2/backendless.min.js"></script>
+
+    <!-- Correct Backendless CDN -->
+    <script src="https://cdnjs.backendless.com/sdk/js/latest/backendless.min.js"></script>
 </head>
 <body>
     <div class="form-container">
@@ -25,11 +27,13 @@
         const APP_ID = 'CCF35FD3-A2BC-4061-AE36-E776E9D35C1D';
         const API_KEY = '1D1826F3-0850-4973-9C61-5E36022B1FD0';
 
+        // Initialize Backendless SDK
         Backendless.initApp(APP_ID, API_KEY);
 
         const form = document.getElementById('signupForm');
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
+
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
             const confirmPassword = document.getElementById('confirmPassword').value.trim();
