@@ -20,11 +20,10 @@
         </div>
     </div>
 
-    <script type="module">
-        const APP_ID = 'CCF35FD3-A2BC-4061-AE36-E776E9D35C1D';
-        const API_KEY = '1D1826F3-0850-4973-9C61-5E36022B1FD0';
-
-        Backendless.initApp(APP_ID, API_KEY);
+   <script src="https://cdnjs.backendless.com/sdk/js/latest/backendless.min.js"></script>
+<script>
+  Backendless.initApp("CCF35FD3-A2BC-4061-AE36-E776E9D35C1D", "1D1826F3-0850-4973-9C61-5E36022B1FD0");
+</script>
 
         const form = document.getElementById('altLoginForm');
         form.addEventListener('submit', async (event) => {
