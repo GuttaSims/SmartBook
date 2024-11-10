@@ -23,6 +23,35 @@
             transition: background-position 0.1s ease;
         }
 
+        /* Intro screen styles */
+        .intro {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #5C258D, #4389A2);
+            z-index: 2;
+            transition: opacity 1s ease;
+            cursor: pointer;
+        }
+
+        .intro-text {
+            font-size: 2.5rem;
+            text-align: center;
+            background: linear-gradient(45deg, #5C258D, #4389A2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
         .form-container {
             background: #fff;
             padding: 40px;
@@ -32,6 +61,8 @@
             max-width: 400px;
             width: 90%;
             z-index: 1;
+            opacity: 0;
+            transition: opacity 1s ease;
         }
 
         h1 {
@@ -97,7 +128,13 @@
     <script src="https://cdnjs.backendless.com/sdk/js/latest/backendless.min.js"></script>
 </head>
 <body>
-    <div class="form-container">
+    <!-- Intro screen -->
+    <div class="intro" id="introScreen">
+        <div class="intro-text">Welcome, Touch To Start</div>
+    </div>
+
+    <!-- Sign up form -->
+    <div class="form-container" id="signupFormContainer">
         <h1>Sign Up</h1>
         <form id="signupForm">
             <input type="email" id="email" class="input-field" placeholder="Email" required>
@@ -140,18 +177,16 @@
             }
         });
 
-        // Mousemove gradient trail effect
-        document.addEventListener('mousemove', (event) => {
-            const { clientX, clientY } = event;
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
+        // Intro screen fade-out and form fade-in
+        const introScreen = document.getElementById('introScreen');
+        const signupFormContainer = document.getElementById('signupFormContainer');
 
-            // Calculate gradient position as a percentage
-            const xPos = (clientX / windowWidth) * 100;
-            const yPos = (clientY / windowHeight) * 100;
-
-            // Update background position based on mouse position
-            document.body.style.background = `radial-gradient(circle at ${xPos}% ${yPos}%, #5C258D, #4389A2)`;
+        introScreen.addEventListener('click', () => {
+            introScreen.style.opacity = '0';  // Fade out intro screen
+            setTimeout(() => {
+                introScreen.style.display = 'none';  // Hide intro screen after fade
+                signupFormContainer.style.opacity = '1';  // Fade in sign-up form
+            }, 1000);  // Match this to the CSS transition duration for a smooth effect
         });
     </script>
 </body>
