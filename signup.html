@@ -126,7 +126,6 @@
             color: #4389A2;
         }
     </style>
-    <script src="https://cdnjs.backendless.com/sdk/js/latest/backendless.min.js"></script>
 </head>
 <body>
     <!-- Intro screen -->
@@ -148,41 +147,13 @@
         </div>
     </div>
 
-    <script type="module">
-        const APP_ID = 'CCF35FD3-A2BC-4061-AE36-E776E9D35C1D';
-        const API_KEY = '1D1826F3-0850-4973-9C61-5E36022B1FD0';
-
-        // Initialize Backendless SDK
-        Backendless.initApp(APP_ID, API_KEY);
-
-        const form = document.getElementById('signupForm');
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const confirmPassword = document.getElementById('confirmPassword').value.trim();
-
-            if (password !== confirmPassword) {
-                alert('Passwords do not match!');
-                return;
-            }
-
-            try {
-                const user = { email, password };
-                const registeredUser = await Backendless.UserService.register(user);
-                alert('Registration successful!');
-                window.location.href = 'login.html';
-            } catch (error) {
-                alert(`Error: ${error.message}`);
-            }
-        });
-
+    <script>
         // Intro screen fade-out and form fade-in
         const introScreen = document.getElementById('introScreen');
         const signupFormContainer = document.getElementById('signupFormContainer');
 
         introScreen.addEventListener('click', () => {
+            console.log('Intro screen clicked'); // Debugging log
             introScreen.style.opacity = '0';  // Fade out intro screen
             setTimeout(() => {
                 introScreen.style.display = 'none';  // Hide intro screen after fade
