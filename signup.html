@@ -18,9 +18,7 @@
             align-items: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #5C258D, #4389A2);
-            color: #333;
             overflow: hidden;
-            transition: background-position 0.1s ease;
         }
 
         /* Intro screen styles */
@@ -29,28 +27,46 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             width: 100%;
             height: 100vh;
-            background: #fff; /* White background for the intro */
+            background: #fff;
             z-index: 2;
             opacity: 1;
             transition: opacity 1s ease;
             cursor: pointer;
         }
 
-        .intro-text {
+        .intro-text, .intro-subtext {
             font-size: 2.5rem;
+            font-weight: bold;
             text-align: center;
             background: linear-gradient(45deg, #5C258D, #4389A2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: bold;
-            animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+        .intro-text {
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        .intro-subtext {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            opacity: 0; /* Hidden initially */
+            animation: fadeIn 1.5s ease forwards;
+            animation-delay: 2s; /* Starts 2 seconds after the "Welcome" */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .form-container {
@@ -130,7 +146,8 @@
 <body>
     <!-- Intro screen -->
     <div class="intro" id="introScreen">
-        <div class="intro-text">Welcome, Touch To Start</div>
+        <div class="intro-text">Welcome</div>
+        <div class="intro-subtext">Touch To Start</div>
     </div>
 
     <!-- Sign up form -->
@@ -153,7 +170,6 @@
         const signupFormContainer = document.getElementById('signupFormContainer');
 
         introScreen.addEventListener('click', () => {
-            console.log('Intro screen clicked'); // Debugging log
             introScreen.style.opacity = '0';  // Fade out intro screen
             setTimeout(() => {
                 introScreen.style.display = 'none';  // Hide intro screen after fade
