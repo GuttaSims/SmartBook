@@ -63,49 +63,86 @@
         a:hover {
             background-color: #fc5c7d;
         }
+
+        .row {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .row p {
+            flex: 0 0 30%; /* Adjust the width of each element */
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <h1>Atlanta Police Department Codes</h1>
     <h2>Study these, as you will need to know how and what to report to dispatch!</h2>
     <div class="codes">
-        <p><span class="number">1:</span> NON-EMERGENCY</p>
-        <p><span class="number">2:</span> EMERGENCY - lights and sirens are NOT REQUIRED</p>
-        <p><span class="number">3:</span> EMERGENCY - lights and sirens ARE REQUIRED</p>
-        <p><span class="number">4:</span> CANCEL CALL</p>
-        <p><span class="number">5:</span> DOMESTIC</p>
-        <p><span class="number">6:</span> FALSE ALARM</p>
-        <p><span class="number">6S:</span> FALSE ALARM (WEATHER STORM)</p>
-        <p><span class="number">7:</span> AVAILABLE FOR SERVICE</p>
-        <p><span class="number">8:</span> PERSON "GONE"</p>
-        <p><span class="number">9:</span> TRANSFER RESPONSIBILITY</p>
-        <p><span class="number">10:</span> VEHICLE IMPOUND</p>
-        <p><span class="number">11:</span> INFORMATION</p>
-        <p><span class="number">12:</span> NO ARREST / NO REPORT</p>
-        <p><span class="number">13:</span> NOT VALID ADDRESS</p>
-        <p><span class="number">14:</span> ALARM REFUSED</p>
-        <p><span class="number">14a:</span> ALARM REFUSED - ALARM OUT</p>
-        <p><span class="number">14b:</span> ALARM REFUSED - ALARM RESET</p>
-        <p><span class="number">15:</span> ALARM - OWNER ON WAY</p>
-        <p><span class="number">15a:</span> ALARM OWNER ON WAY - ALARM OUT</p>
-        <p><span class="number">15b:</span> ALARM OWNER ON WAY - ALARM RESET</p>
-        <p><span class="number">16:</span> RELEASE STOLEN PROPERTY TO OWNER</p>
-        <p><span class="number">17:</span> REPORT MADE</p>
-        <p><span class="number">17F:</span> USED FORCE TO AFFECT ARREST</p>
-        <p><span class="number">17D:</span> REPORT - PRE-ARREST DIVERSION PROGRAM</p>
-        <p><span class="number">17P:</span> VEHICLE PURSUIT</p>
-        <p><span class="number">19:</span> STOLEN ARTICLE</p>
-        <p><span class="number">20:</span> O.C. USED</p>
-        <p><span class="number">20T:</span> ECD DEPLOYMENT</p>
-        <p><span class="number">21:</span> KIDNAPPING - OFFICER</p>
-        <p><span class="number">22:</span> CAN'T LOCATE ADDRESS</p>
-        <p><span class="number">23:</span> ARREST AND COPY OF CHARGES</p>
-        <p><span class="number">24:</span> NOTHING TO CALL</p>
-        <p><span class="number">25:</span> LOCATED EXPLOSIVE DEVICE OR SUSPECTED EXPLOSIVE DEVICE</p>
-        <p><span class="number">26:</span> ARRIVE ON CALL</p>
-        <p><span class="number">28:</span> WANTED CHECK</p>
-        <p><span class="number">30:</span> MAYOR OR MAYOR'S FAMILY INJURED</p>
-        <p><span class="number">31:</span> REMOVE SHOTGUN / PATROL RIFLE</p>
+        <div class="row">
+            <p><span class="number">1:</span> NON-EMERGENCY</p>
+            <p><span class="number">2:</span> EMERGENCY - lights and sirens are NOT REQUIRED</p>
+            <p><span class="number">3:</span> EMERGENCY - lights and sirens ARE REQUIRED</p>
+        </div>
+        <div class="row">
+            <p><span class="number">4:</span> CANCEL CALL</p>
+            <p><span class="number">5:</span> DOMESTIC</p>
+            <p><span class="number">6:</span> FALSE ALARM</p>
+        </div>
+        <div class="row">
+            <p><span class="number">6S:</span> FALSE ALARM (WEATHER STORM)</p>
+            <p><span class="number">7:</span> AVAILABLE FOR SERVICE</p>
+            <p><span class="number">8:</span> PERSON "GONE"</p>
+        </div>
+        <div class="row">
+            <p><span class="number">9:</span> TRANSFER RESPONSIBILITY</p>
+            <p><span class="number">10:</span> VEHICLE IMPOUND</p>
+            <p><span class="number">11:</span> INFORMATION</p>
+        </div>
+        <div class="row">
+            <p><span class="number">12:</span> NO ARREST / NO REPORT</p>
+            <p><span class="number">13:</span> NOT VALID ADDRESS</p>
+            <p><span class="number">14:</span> ALARM REFUSED</p>
+        </div>
+        <div class="row">
+            <p><span class="number">14a:</span> ALARM REFUSED - ALARM OUT</p>
+            <p><span class="number">14b:</span> ALARM REFUSED - ALARM RESET</p>
+            <p><span class="number">15:</span> ALARM - OWNER ON WAY</p>
+        </div>
+        <div class="row">
+            <p><span class="number">15a:</span> ALARM OWNER ON WAY - ALARM OUT</p>
+            <p><span class="number">15b:</span> ALARM OWNER ON WAY - ALARM RESET</p>
+            <p><span class="number">16:</span> RELEASE STOLEN PROPERTY TO OWNER</p>
+        </div>
+        <div class="row">
+            <p><span class="number">17:</span> REPORT MADE</p>
+            <p><span class="number">17F:</span> USED FORCE TO AFFECT ARREST</p>
+            <p><span class="number">17D:</span> REPORT - PRE-ARREST DIVERSION PROGRAM</p>
+        </div>
+        <div class="row">
+            <p><span class="number">17P:</span> VEHICLE PURSUIT</p>
+            <p><span class="number">19:</span> STOLEN ARTICLE</p>
+            <p><span class="number">20:</span> O.C. USED</p>
+        </div>
+        <div class="row">
+            <p><span class="number">20T:</span> ECD DEPLOYMENT</p>
+            <p><span class="number">21:</span> KIDNAPPING - OFFICER</p>
+            <p><span class="number">22:</span> CAN'T LOCATE ADDRESS</p>
+        </div>
+        <div class="row">
+            <p><span class="number">23:</span> ARREST AND COPY OF CHARGES</p>
+            <p><span class="number">24:</span> NOTHING TO CALL</p>
+            <p><span class="number">25:</span> LOCATED EXPLOSIVE DEVICE OR SUSPECTED EXPLOSIVE DEVICE</p>
+        </div>
+        <div class="row">
+            <p><span class="number">26:</span> ARRIVE ON CALL</p>
+            <p><span class="number">28:</span> WANTED CHECK</p>
+            <p><span class="number">30:</span> MAYOR OR MAYOR'S FAMILY INJURED</p>
+        </div>
+        <div class="row">
+            <p><span class="number">31:</span> REMOVE SHOTGUN / PATROL RIFLE</p>
+        </div>
     </div>
     <a href="library.html">Back to Library</a>
 </body>
