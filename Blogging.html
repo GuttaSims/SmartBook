@@ -3,169 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signal Codes</title>
+    <title>Police Signal Codes</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f4f4f9;
         }
         .container {
-            width: 80%;
-            margin: 50px auto;
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .codes-row {
+        .signal {
             display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
         }
-        .codes-row p {
-            width: 20%;
-            margin: 5px 0;
-            font-size: 16px;
+        .signal:last-child {
+            border-bottom: none;
         }
-        .number {
+        .signal-code {
             font-weight: bold;
+            color: #333;
+        }
+        .signal-description {
+            color: #555;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
     </style>
+    <script>
+        const signals = [
+            { code: "1A", description: "Abandoned Auto" },
+            { code: "1R", description: "Recovered Auto" },
+            { code: "2S", description: "Silent Alarm" },
+            { code: "2A", description: "Audible Alarm" },
+            { code: "3A", description: "Fire Alarm - Assembly" },
+            { code: "3B", description: "Fire Alarm - Business" },
+            { code: "3D", description: "Fire Alarm - Dwelling" },
+            { code: "3DC", description: "Fire Alarm - Detention/Corrections" },
+            { code: "3E", description: "Fire Alarm - Educational Facility" },
+            { code: "3H", description: "Fire Alarm - Healthcare, Personal Care Homes" },
+            { code: "3HM", description: "Fire Alarm - Highrise" },
+            { code: "3I", description: "Fire Alarm - Industrial/Utility" },
+            { code: "3M", description: "Fire Alarm - Multi Family Dwelling" },
+            { code: "3MC", description: "Fire Alarm - Mercantile" },
+            { code: "3R", description: "Fire Alarm - Rooming, Lodging, & Boarding" },
+            { code: "3S", description: "Fire Alarm - Storage/Warehouse" },
+            { code: "4", description: "Carbon Monoxide" },
+            { code: "6R", description: "Burglary in Progress - Residence" },
+            { code: "6B", description: "Burglary in Progress - Business" },
+            { code: "7", description: "Criminal Trespassing" },
+            { code: "10", description: "Wash Down" },
+            { code: "15", description: "Welfare Check" },
+            { code: "16", description: "Emergency Message" },
+            { code: "17A", description: "Lockout - Vehicle" },
+            { code: "17R", description: "Lockout - Residence" },
+            { code: "18", description: "Tree Down" },
+            { code: "19", description: "Water Problem" },
+            { code: "20A", description: "Contagious Disease - HIV" },
+            { code: "20H", description: "Contagious Disease - Hepatitis" },
+            { code: "20T", description: "Contagious Disease - Tuberculosis" },
+            { code: "21", description: "Kidnapping" },
+            // Add more signals as needed
+        ];
+
+        let currentPage = 1;
+        const signalsPerPage = 10;
+
+        function renderSignals() {
+            const container = document.querySelector(".container");
+            const startIndex = (currentPage - 1) * signalsPerPage;
+            const endIndex = startIndex + signalsPerPage;
+            const currentSignals = signals.slice(startIndex, endIndex);
+
+            container.innerHTML = `
+                <h1>Police Signal Codes</h1>
+                ${currentSignals
+                    .map(
+                        signal => `
+                        <div class="signal">
+                            <div class="signal-code">${signal.code}</div>
+                            <div class="signal-description">${signal.description}</div>
+                        </div>
+                    `
+                    )
+                    .join("")}
+                <div class="pagination">
+                    <button onclick="changePage(-1)" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
+                    <button onclick="changePage(1)" ${endIndex >= signals.length ? "disabled" : ""}>Next</button>
+                </div>
+            `;
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            renderSignals();
+        }
+
+        document.addEventListener("DOMContentLoaded", renderSignals);
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Signal Codes</h1>
-        <div class="codes-row">
-            <p><span class="number">1A:</span> Abandoned Auto</p>
-            <p><span class="number">1R:</span> Recovered Auto</p>
-            <p><span class="number">2S:</span> Silent Alarm</p>
-            <p><span class="number">2A:</span> Audible Alarm</p>
-            <p><span class="number">3A:</span> Fire Alarm - Assembly</p>
-            <p><span class="number">3B:</span> Fire Alarm - Business</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">3D:</span> Fire Alarm - Dwelling</p>
-            <p><span class="number">3DC:</span> Fire Alarm - Detention/Corrections</p>
-            <p><span class="number">3E:</span> Fire Alarm - Educational Facility</p>
-            <p><span class="number">3H:</span> Fire Alarm - Healthcare, Personal Care Homes</p>
-            <p><span class="number">3HM:</span> Fire Alarm - Highrise</p>
-            <p><span class="number">3I:</span> Fire Alarm - Industrial/Utility</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">3M:</span> Fire Alarm - Multi Family Dwelling</p>
-            <p><span class="number">3MC:</span> Fire Alarm - Mercantile</p>
-            <p><span class="number">3R:</span> Fire Alarm - Rooming, Lodging, & Boarding</p>
-            <p><span class="number">3S:</span> Fire Alarm - Storage/Warehouse</p>
-            <p><span class="number">4:</span> Carbon Monoxide</p>
-            <p><span class="number">6R:</span> Burglary in Progress - Residence</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">6B:</span> Burglary in Progress - Business</p>
-            <p><span class="number">7:</span> Criminal Trespassing</p>
-            <p><span class="number">10:</span> Wash Down</p>
-            <p><span class="number">15:</span> Welfare Check</p>
-            <p><span class="number">16:</span> Emergency Message</p>
-            <p><span class="number">17A:</span> Lockout - Vehicle</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">17R:</span> Lockout - Residence</p>
-            <p><span class="number">18:</span> Tree Down</p>
-            <p><span class="number">19:</span> Water Problem</p>
-            <p><span class="number">20A:</span> Contagious Disease - HIV</p>
-            <p><span class="number">20H:</span> Contagious Disease - Hepatitis</p>
-            <p><span class="number">20T:</span> Contagious Disease - Tuberculosis</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">21:</span> Kidnapping</p>
-            <p><span class="number">22:</span> Against Department Policy</p>
-            <p><span class="number">23:</span> Disorderly Children</p>
-            <p><span class="number">24:</span> Demented Person</p>
-            <p><span class="number">25:</span> Shots Fired</p>
-            <p><span class="number">26:</span> Fireworks</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">27:</span> Intoxicated Driver</p>
-            <p><span class="number">28:</span> Intoxicated Person</p>
-            <p><span class="number">29:</span> Fight in Progress</p>
-            <p><span class="number">30:</span> Explosion</p>
-            <p><span class="number">31:</span> Downed Wires</p>
-            <p><span class="number">31I:</span> Electrical Short (Interior)</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">32:</span> Open Door/Window</p>
-            <p><span class="number">33A:</span> Fire - Assembly</p>
-            <p><span class="number">33B:</span> Fire - Business</p>
-            <p><span class="number">33D:</span> Fire - Dwelling</p>
-            <p><span class="number">33DC:</span> Fire - Detention/Corrections</p>
-            <p><span class="number">33E:</span> Fire - Educational Facility</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">33G:</span> Fire - Garbage/Trash</p>
-            <p><span class="number">33H:</span> Fire - Healthcare, Personal Care Home</p>
-            <p><span class="number">33HM:</span> Fire - Highrise</p>
-            <p><span class="number">33I:</span> Fire - Industrial/Utility</p>
-            <p><span class="number">33M:</span> Fire - Multi Family Dwelling</p>
-            <p><span class="number">33MC:</span> Fire - Mercantile</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">33R:</span> Fire - Rooming, Lodging, & Boarding</p>
-            <p><span class="number">33S:</span> Fire - Storage/Warehouse</p>
-            <p><span class="number">34:</span> Fire - Vehicle</p>
-            <p><span class="number">35:</span> Wood/Grass Fire</p>
-            <p><span class="number">36B:</span> Robbery in Progress - Business</p>
-            <p><span class="number">36P:</span> Robbery in Progress - Pedestrian</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">36R:</span> Robbery in Progress - Residential</p>
-            <p><span class="number">36V:</span> Robbery in Progress - Carjacking</p>
-            <p><span class="number">37:</span> Illegal Parking</p>
-            <p><span class="number">38A:</span> Illegal Alcohol</p>
-            <p><span class="number">38D:</span> Illegal Drugs</p>
-            <p><span class="number">39:</span> Information to Officer</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">40:</span> Animal Call</p>
-            <p><span class="number">41I:</span> Vehicle Accident - Injuries</p>
-            <p><span class="number">41IT:</span> Vehicle Accident - Entrapment</p>
-            <p><span class="number">41F:</span> Vehicle Accident - Involves Fire/City Vehicle</p>
-            <p><span class="number">41P:</span> Vehicle Accident - Involves Police/City Vehicle</p>
-            <p><span class="number">41S:</span> Vehicle Accident - Involves Streetcar</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">42B:</span> Burglary - Business</p>
-            <p><span class="number">42R:</span> Burglary - Residence</p>
-            <p><span class="number">43:</span> Vehicle Accident - Hit and Run</p>
-            <p><span class="number">44B:</span> Robbery - Business</p>
-            <p><span class="number">44P:</span> Robbery - Pedestrian</p>
-            <p><span class="number">44R:</span> Robbery - Residence</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">44V:</span> Robbery - Carjacking</p>
-            <p><span class="number">45A:</span> Larceny - From Vehicle</p>
-            <p><span class="number">45G:</span> Larceny - Gas Drive Off</p>
-            <p><span class="number">45P:</span> Larceny - Pickpocket</p>
-            <p><span class="number">45S:</span> Larceny - Shoplifting</p>
-            <p><span class="number">45V:</span> Larceny - Vehicle Theft</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">46A:</span> Larceny - Auto</p>
-            <p><span class="number">46B:</span> Larceny - Retail</p>
-            <p><span class="number">46C:</span> Larceny - From Store</p>
-            <p><span class="number">46D:</span> Larceny - From Warehouse</p>
-            <p><span class="number">46E:</span> Larceny - From Yard</p>
-            <p><span class="number">46F:</span> Larceny - Shoplifting Arrest</p>
-        </div>
-        <div class="codes-row">
-            <p><span class="number">47A:</span> Stolen Property</p>
-            <p><span class="number">48:</span> Kidnapped - Child</p>
-            <p><span class="number">49A:</span> Missing Person</p>
-            <p><span class="number">49B:</span> Missing Person - Adult</p>
-            <p><span class="number">50A:</span> Domestic Disturbance</p>
-            <p><span class="number">50B:</span> Domestic - Violent</p>
-        </div>
-    </div>
-    </div>
+    <div class="container"></div>
 </body>
 </html>
