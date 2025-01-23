@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APD Police Signals</title>
+    <title>APD Police Codes</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,10 +11,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             flex-direction: column;
             text-align: center;
             padding: 20px;
+            margin: 0;
         }
 
         h1 {
@@ -25,25 +26,27 @@
             color: #555;
         }
 
-        .signals {
+        .codes {
             max-width: 600px;
             margin: 20px auto;
             line-height: 1.8;
             text-align: left;
+            overflow: visible;
+            font-size: 16px;
         }
 
-        .signals span.number {
+        .codes span.number {
             color: blue;
             font-weight: bold;
         }
 
-        .signals p {
+        .codes p {
             margin: 0 0 10px;
             color: black;
             transition: background-color 0.3s ease;
         }
 
-        .signals p:hover {
+        .codes p:hover {
             background-color: red;
             color: white;
         }
@@ -60,39 +63,71 @@
         a:hover {
             background-color: #fc5c7d;
         }
+
+        .codes-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .codes-row p {
+            width: 48%;
+            margin: 0 0 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>Atlanta Police Department Signals</h1>
+    <h1>Atlanta Police Department Codes</h1>
     <h2>Study these, as you will need to know what dispatch is reporting to you!</h2>
-    <div class="signals">
-        <p><span class="number">1A:</span> Abandoned Auto</p>
-        <p><span class="number">1R:</span> Recovered Auto</p>
-        <p><span class="number">2S:</span> Silent Alarm</p>
-        <p><span class="number">2A:</span> Audible Alarm</p>
-        <p><span class="number">3A:</span> Fire Alarm - Assembly</p>
-        <p><span class="number">3B:</span> Fire Alarm - Business</p>
-        <p><span class="number">3D:</span> Fire Alarm - Dwelling</p>
-        <p><span class="number">3DC:</span> Fire Alarm - Detention/Corrections</p>
-        <p><span class="number">3E:</span> Fire Alarm - Educational Facility</p>
-        <p><span class="number">3H:</span> Fire Alarm - Healthcare, Personal Care Homes</p>
-        <p><span class="number">3HM:</span> Fire Alarm - Highrise</p>
-        <p><span class="number">3I:</span> Fire Alarm - Industrial/Utility</p>
-        <p><span class="number">3M:</span> Fire Alarm - Multi Family Dwelling</p>
-        <p><span class="number">3MC:</span> Fire Alarm - Mercantile</p>
-        <p><span class="number">3R:</span> Fire Alarm - Rooming, Lodging, & Boarding</p>
-        <p><span class="number">3S:</span> Fire Alarm - Storage/Warehouse</p>
-        <p><span class="number">4:</span> Carbon Monoxide</p>
-        <p><span class="number">6R:</span> Burglary in Progress - Residence</p>
-        <p><span class="number">6B:</span> Burglary in Progress - Business</p>
-        <p><span class="number">7:</span> Criminal Trespassing</p>
-        <p><span class="number">10:</span> Wash Down</p>
-        <p><span class="number">15:</span> Welfare Check</p>
-        <p><span class="number">16:</span> Emergency Message</p>
-        <p><span class="number">17A:</span> Lockout - Vehicle</p>
-        <p><span class="number">17R:</span> Lockout - Residence</p>
-        <p><span class="number">18:</span> Tree Down</p>
-        <p><span class="number">19:</span> Water Problem</p>
+    <div class="codes">
+        <div class="codes-row">
+            <p><span class="number">1A:</span> TRAFFIC STOP</p>
+            <p><span class="number">1B:</span> SUSPICIOUS PERSON</p>
+            <p><span class="number">1C:</span> WARRANT SERVICE</p>
+            <p><span class="number">1D:</span> ROADBLOCK</p>
+            <p><span class="number">1E:</span> PARKING COMPLAINT</p>
+            <p><span class="number">1F:</span> PROWLER</p>
+        </div>
+        <div class="codes-row">
+            <p><span class="number">1G:</span> INTOXICATED PERSON</p>
+            <p><span class="number">1H:</span> RECKLESS DRIVING</p>
+            <p><span class="number">1I:</span> HIT AND RUN</p>
+            <p><span class="number">1J:</span> HOMICIDE</p>
+            <p><span class="number">2A:</span> DUI</p>
+            <p><span class="number">2B:</span> WEAPON COMPLAINT</p>
+        </div>
+        <div class="codes-row">
+            <p><span class="number">2C:</span> CARJACKING</p>
+            <p><span class="number">2D:</span> BURGLARY</p>
+            <p><span class="number">2E:</span> ROBBERY</p>
+            <p><span class="number">2F:</span> SHOOTING</p>
+            <p><span class="number">3A:</span> ASSAULT</p>
+            <p><span class="number">3B:</span> STABBING</p>
+        </div>
+        <div class="codes-row">
+            <p><span class="number">3C:</span> SEXUAL ASSAULT</p>
+            <p><span class="number">3D:</span> DOMESTIC VIOLENCE</p>
+            <p><span class="number">3E:</span> CHILD ABUSE</p>
+            <p><span class="number">3F:</span> THREATS</p>
+            <p><span class="number">4A:</span> MISSING PERSON</p>
+            <p><span class="number">4B:</span> FOUND PERSON</p>
+        </div>
+        <div class="codes-row">
+            <p><span class="number">4C:</span> SUSPICIOUS VEHICLE</p>
+            <p><span class="number">4D:</span> MOTOR VEHICLE ACCIDENT</p>
+            <p><span class="number">4E:</span> PROPERTY DAMAGE</p>
+            <p><span class="number">4F:</span> TOWED VEHICLE</p>
+            <p><span class="number">5A:</span> VEHICLE PURSUIT</p>
+            <p><span class="number">5B:</span> ROAD RAGE</p>
+        </div>
+        <div class="codes-row">
+            <p><span class="number">5C:</span> SUSPICIOUS PACKAGE</p>
+            <p><span class="number">5D:</span> BOMB THREAT</p>
+            <p><span class="number">5E:</span> SUSPICIOUS FIRE</p>
+            <p><span class="number">5F:</span> ARSON</p>
+            <p><span class="number">6A:</span> TRESPASSING</p>
+            <p><span class="number">6B:</span> LOITERING</p>
+        </div>
     </div>
     <a href="library.html">Back to Library</a>
 </body>
